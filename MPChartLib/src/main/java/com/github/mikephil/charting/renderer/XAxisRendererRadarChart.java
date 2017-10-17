@@ -1,9 +1,7 @@
-
 package com.github.mikephil.charting.renderer;
 
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.PointF;
-
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.utils.MPPointF;
@@ -12,60 +10,92 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 
 public class XAxisRendererRadarChart extends XAxisRenderer {
 
-    private RadarChart mChart;
+  private RadarChart mChart;
 
-    public XAxisRendererRadarChart(ViewPortHandler viewPortHandler, XAxis xAxis, RadarChart chart) {
-        super(viewPortHandler, xAxis, null);
+  public XAxisRendererRadarChart(ViewPortHandler viewPortHandler, XAxis xAxis, RadarChart chart) {
+    super(viewPortHandler, xAxis, null);
 
-        mChart = chart;
+    mChart = chart;
+  }
+
+  @Override public void renderAxisLabels(Canvas c) {
+
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+
+    final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+    final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
+
+    mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+    mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+    mAxisLabelPaint.setColor(mXAxis.getTextColor());
+
+    float sliceangle = mChart.getSliceAngle();
+
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    float factor = mChart.getFactor();
+
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance(0, 0);
+    for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
+
+      String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis);
+
+      float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
+
+      Utils.getPosition(center, mChart.getYRange() * factor + mXAxis.mLabelRotatedWidth / 2f, angle,
+          pOut);
+
+      drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f, drawLabelAnchor,
+          labelRotationAngleDegrees);
     }
 
-    @Override
-    public void renderAxisLabels(Canvas c) {
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+    MPPointF.recycleInstance(drawLabelAnchor);
+  }
 
-        if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled())
-            return;
+  public void renderAxisImages(Canvas c) {
 
-        final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-        final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
 
-        mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
-        mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-        mAxisLabelPaint.setColor(mXAxis.getTextColor());
+    final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
+    final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
 
-        float sliceangle = mChart.getSliceAngle();
+    mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
+    mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
+    mAxisLabelPaint.setColor(mXAxis.getTextColor());
 
-        // calculate the factor that is needed for transforming the value to
-        // pixels
-        float factor = mChart.getFactor();
+    float sliceangle = mChart.getSliceAngle();
 
-        MPPointF center = mChart.getCenterOffsets();
-        MPPointF pOut = MPPointF.getInstance(0,0);
-        for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
+    // calculate the factor that is needed for transforming the value to
+    // pixels
+    float factor = mChart.getFactor();
 
-            String label = mXAxis.getValueFormatter().getFormattedValue(i, mXAxis);
+    MPPointF center = mChart.getCenterOffsets();
+    MPPointF pOut = MPPointF.getInstance(0, 0);
+    for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
 
-            float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
+      Bitmap drawable = mXAxis.getImageFormatter().getImage(i, mXAxis);
 
-            Utils.getPosition(center, mChart.getYRange() * factor
-                    + mXAxis.mLabelRotatedWidth / 2f, angle, pOut);
+      float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
 
-            drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f,
-                    drawLabelAnchor, labelRotationAngleDegrees);
-        }
+      Utils.getPosition(center, mChart.getYRange() * factor + mXAxis.mLabelRotatedWidth / 2f, angle,
+          pOut);
 
-        MPPointF.recycleInstance(center);
-        MPPointF.recycleInstance(pOut);
-        MPPointF.recycleInstance(drawLabelAnchor);
+      drawImage(c, drawable, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f, drawLabelAnchor,
+          labelRotationAngleDegrees);
     }
 
-	/**
-	 * XAxis LimitLines on RadarChart not yet supported.
-	 *
-	 * @param c
-	 */
-	@Override
-	public void renderLimitLines(Canvas c) {
-		// this space intentionally left blank
-	}
+    MPPointF.recycleInstance(center);
+    MPPointF.recycleInstance(pOut);
+    MPPointF.recycleInstance(drawLabelAnchor);
+  }
+
+  /**
+   * XAxis LimitLines on RadarChart not yet supported.
+   */
+  @Override public void renderLimitLines(Canvas c) {
+    // this space intentionally left blank
+  }
 }
