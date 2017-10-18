@@ -119,9 +119,18 @@ public abstract class Utils {
               + " take place.");
       return px;
     }
-
-    return px / mMetrics.density;
+    float density = mMetrics.density > 3f ? 3f : mMetrics.density;
+    return px / density;
   }
+
+  public static float getScreenHeight(){
+    return mMetrics.heightPixels;
+  }
+
+  public static float getScreenWidth(){
+    return convertPixelsToDp(mMetrics.widthPixels);
+  }
+
 
   /**
    * calculates the approximate width of a text, depending on a demo text

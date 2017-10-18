@@ -65,6 +65,8 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   protected YAxisRendererRadarChart mYAxisRenderer;
   protected XAxisRendererRadarChart mXAxisRenderer;
 
+  protected int numCircles = 4;
+
   public RadarChart(Context context) {
     super(context);
   }
@@ -338,5 +340,13 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
    */
   public float getYRange() {
     return mYAxis.mAxisRange;
+  }
+
+  public int getNumCircles() {
+    return numCircles;
+  }
+
+  public void setNumCircles(int numCircles) {
+    this.numCircles = numCircles;
   }
 }

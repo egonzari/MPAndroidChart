@@ -3,6 +3,7 @@ package com.xxmassdeveloper.mpchartexample;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,6 +54,7 @@ public class RadarChartActivitry extends DemoBase {
     mChart.setWebColorInner(Color.LTGRAY);
     mChart.setWebAlpha(100);
     mChart.setImageDrawMode(true);
+    mChart.setNumCircles(4);
 
     // create a custom MarkerView (extend MarkerView) and specify the layout
     // to use for it
@@ -81,7 +83,7 @@ public class RadarChartActivitry extends DemoBase {
       xAxis.setValueFormatter(new IAxisValueFormatter() {
 
         private String[] mActivities =
-            new String[] { "Burger", "Steak", "Salad", "Pasta", "Pizza" };
+            new String[] { "Burger", "Steak", "Salad", "Pasta", "Pizza", "Tuna" };
 
         @Override public String getFormattedValue(float value, AxisBase axis) {
           return mActivities[(int) value % mActivities.length];
@@ -92,7 +94,7 @@ public class RadarChartActivitry extends DemoBase {
 
     YAxis yAxis = mChart.getYAxis();
     yAxis.setTypeface(mTfLight);
-    yAxis.setLabelCount(5, false);
+    yAxis.setLabelCount(4, false);
     yAxis.setTextSize(9f);
     yAxis.setAxisMinimum(0f);
     yAxis.setAxisMaximum(80f);
@@ -207,9 +209,17 @@ public class RadarChartActivitry extends DemoBase {
 
   public void setData() {
 
+    Point size = new Point();
+    int Measuredwidth = 0;
+    int Measuredheight = 0;
+    WindowManager w = getWindowManager();
+    w.getDefaultDisplay().getSize(size);
+    Measuredwidth = size.x;
+    Measuredheight = size.y;
+
     float mult = 80;
     float min = 20;
-    int cnt = 5;
+    int cnt = 6;
 
     ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
     ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
