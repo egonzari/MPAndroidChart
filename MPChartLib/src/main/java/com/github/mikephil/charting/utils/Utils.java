@@ -122,11 +122,11 @@ public abstract class Utils {
     return px / density;
   }
 
-  public static float getScreenHeight(){
-    return mMetrics.heightPixels;
+  public static float getScreenHeight() {
+    return convertPixelsToDp(mMetrics.heightPixels);
   }
 
-  public static float getScreenWidth(){
+  public static float getScreenWidth() {
     return convertPixelsToDp(mMetrics.widthPixels);
   }
 
