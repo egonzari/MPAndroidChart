@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.renderer;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -98,7 +97,9 @@ public class XAxisRenderer extends AxisRenderer {
 
   @Override public void renderAxisLabels(Canvas c) {
 
-    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()){
+      return;
+    }
 
     float yoffset = mXAxis.getYOffset();
 
@@ -135,48 +136,11 @@ public class XAxisRenderer extends AxisRenderer {
     MPPointF.recycleInstance(pointF);
   }
 
-  @Override public void renderAxisImages(Canvas c) {
-
-    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
-
-    float yoffset = mXAxis.getYOffset();
-
-    mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
-    mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-    mAxisLabelPaint.setColor(mXAxis.getTextColor());
-
-    MPPointF pointF = MPPointF.getInstance(0, 0);
-    if (mXAxis.getPosition() == XAxisPosition.TOP) {
-      pointF.x = 0.5f;
-      pointF.y = 1.0f;
-      drawImages(c, mViewPortHandler.contentTop() - yoffset, pointF);
-    } else if (mXAxis.getPosition() == XAxisPosition.TOP_INSIDE) {
-      pointF.x = 0.5f;
-      pointF.y = 1.0f;
-      drawImages(c, mViewPortHandler.contentTop() + yoffset + mXAxis.mLabelRotatedHeight, pointF);
-    } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM) {
-      pointF.x = 0.5f;
-      pointF.y = 0.0f;
-      drawImages(c, mViewPortHandler.contentBottom() + yoffset, pointF);
-    } else if (mXAxis.getPosition() == XAxisPosition.BOTTOM_INSIDE) {
-      pointF.x = 0.5f;
-      pointF.y = 0.0f;
-      drawImages(c, mViewPortHandler.contentBottom() - yoffset - mXAxis.mLabelRotatedHeight,
-          pointF);
-    } else { // BOTH SIDED
-      pointF.x = 0.5f;
-      pointF.y = 1.0f;
-      drawImages(c, mViewPortHandler.contentTop() - yoffset, pointF);
-      pointF.x = 0.5f;
-      pointF.y = 0.0f;
-      drawImages(c, mViewPortHandler.contentBottom() + yoffset, pointF);
-    }
-    MPPointF.recycleInstance(pointF);
-  }
-
   @Override public void renderAxisLine(Canvas c) {
 
-    if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled()) return;
+    if (!mXAxis.isDrawAxisLineEnabled() || !mXAxis.isEnabled()){
+      return;
+    }
 
     mAxisLinePaint.setColor(mXAxis.getAxisLineColor());
     mAxisLinePaint.setStrokeWidth(mXAxis.getAxisLineWidth());
@@ -256,71 +220,14 @@ public class XAxisRenderer extends AxisRenderer {
     Utils.drawXAxisValue(c, formattedLabel, x, y, mAxisLabelPaint, anchor, angleDegrees);
   }
 
-  /**
-   * draws the x-labels on the specified y-position
-   */
-  protected void drawImages(Canvas c, float pos, MPPointF anchor) {
-
-    final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-    boolean centeringEnabled = mXAxis.isCenterAxisLabelsEnabled();
-
-    float[] positions = new float[mXAxis.mEntryCount * 2];
-
-    for (int i = 0; i < positions.length; i += 2) {
-
-      // only fill x values
-      if (centeringEnabled) {
-        positions[i] = mXAxis.mCenteredEntries[i / 2];
-      } else {
-        positions[i] = mXAxis.mEntries[i / 2];
-      }
-    }
-
-    mTrans.pointValuesToPixel(positions);
-
-    for (int i = 0; i < positions.length; i += 2) {
-
-      float x = positions[i];
-
-      if (mViewPortHandler.isInBoundsX(x)) {
-
-        Bitmap drawable = mXAxis.getImageFormatter().getImage(mXAxis.mEntries[i / 2], mXAxis);
-
-        if (mXAxis.isAvoidFirstLastClippingEnabled()) {
-
-          // avoid clipping of the last
-          if (i == mXAxis.mEntryCount - 1 && mXAxis.mEntryCount > 1) {
-            float width = drawable.getWidth();
-
-            if (width > mViewPortHandler.offsetRight() * 2
-                && x + width > mViewPortHandler.getChartWidth()) {
-              x -= width / 2;
-            }
-
-            // avoid clipping of the first
-          } else if (i == 0) {
-
-            float width = drawable.getWidth();
-            x += width / 2;
-          }
-        }
-
-        drawImage(c, drawable, x, pos, anchor, labelRotationAngleDegrees);
-      }
-    }
-  }
-
-  protected void drawImage(Canvas c, Bitmap drawable, float x, float y, MPPointF anchor,
-      float angleDegrees) {
-    Utils.drawXAxisImage(c, drawable, x, y, mAxisLabelPaint, anchor, angleDegrees);
-  }
-
   protected Path mRenderGridLinesPath = new Path();
   protected float[] mRenderGridLinesBuffer = new float[2];
 
   @Override public void renderGridLines(Canvas c) {
 
-    if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled()) return;
+    if (!mXAxis.isDrawGridLinesEnabled() || !mXAxis.isEnabled()){
+      return;
+    }
 
     int clipRestoreCount = c.save();
     c.clipRect(getGridClippingRect());
@@ -382,7 +289,9 @@ public class XAxisRenderer extends AxisRenderer {
 
     List<LimitLine> limitLines = mXAxis.getLimitLines();
 
-    if (limitLines == null || limitLines.size() <= 0) return;
+    if (limitLines == null || limitLines.size() <= 0){
+      return;
+    }
 
     float[] position = mRenderLimitLinesBuffer;
     position[0] = 0;
@@ -392,7 +301,9 @@ public class XAxisRenderer extends AxisRenderer {
 
       LimitLine l = limitLines.get(i);
 
-      if (!l.isEnabled()) continue;
+      if (!l.isEnabled()){
+        continue;
+      }
 
       int clipRestoreCount = c.save();
       mLimitLineClippingRect.set(mViewPortHandler.getContentRect());

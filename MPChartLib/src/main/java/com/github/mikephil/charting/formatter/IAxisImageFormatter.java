@@ -1,6 +1,6 @@
 package com.github.mikephil.charting.formatter;
 
-import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import com.github.mikephil.charting.components.AxisBase;
 
 /**
@@ -18,5 +18,5 @@ public interface IAxisImageFormatter {
    * @param value the value to be formatted
    * @param axis the axis the value belongs to
    */
-  Bitmap getImage(float value, AxisBase axis);
+  Drawable getImage(float value, AxisBase axis);
 }

@@ -18,11 +18,7 @@
         <activity
             android:name="com.xxmassdeveloper.mpchartexample.notimportant.MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name="LineChartActivity1"></activity> <!--  android:configChanges="keyboardHidden|orientation|screenSize"  -->
         <activity android:name="LineChartActivity2"></activity>
@@ -44,7 +40,13 @@
         <activity android:name="InvertedLineChartActivity"></activity>
         <activity android:name="CandleStickChartActivity"></activity>
         <activity android:name="CubicLineChartActivity"></activity>
-        <activity android:name="RadarChartActivitry"></activity>
+        <activity android:name="RadarChartActivitry">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name="LineChartActivityColored"></activity>
         <activity android:name="DynamicalAddingActivity"></activity>
         <activity android:name=".realm.RealmDatabaseActivityLine"></activity>

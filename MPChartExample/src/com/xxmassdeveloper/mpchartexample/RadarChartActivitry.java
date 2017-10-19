@@ -1,10 +1,10 @@
 package com.xxmassdeveloper.mpchartexample;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
@@ -54,6 +54,7 @@ public class RadarChartActivitry extends DemoBase {
     mChart.setWebColorInner(Color.LTGRAY);
     mChart.setWebAlpha(100);
     mChart.setImageDrawMode(true);
+    mChart.setRotationEnabled(true);
     mChart.setNumCircles(4);
 
     // create a custom MarkerView (extend MarkerView) and specify the layout
@@ -74,9 +75,9 @@ public class RadarChartActivitry extends DemoBase {
     xAxis.setXOffset(0f);
     if (mChart.isImageDrawMode()) {
       xAxis.setImageFormatter(new IAxisImageFormatter() {
-        @Override public Bitmap getImage(float value, AxisBase axis) {
-          return BitmapFactory.decodeResource(getApplicationContext().getResources(),
-              R.drawable.ic_launcher);
+        @Override public Drawable getImage(float value, AxisBase axis) {
+          return ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_launcher)
+              ;//BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher);
         }
       });
     } else {
@@ -210,23 +211,18 @@ public class RadarChartActivitry extends DemoBase {
   public void setData() {
 
     Point size = new Point();
-    int Measuredwidth = 0;
-    int Measuredheight = 0;
     WindowManager w = getWindowManager();
     w.getDefaultDisplay().getSize(size);
-    Measuredwidth = size.x;
-    Measuredheight = size.y;
-
     float mult = 80;
     float min = 20;
-    int cnt = 6;
+    int numEventsChart = 6;
 
-    ArrayList<RadarEntry> entries1 = new ArrayList<RadarEntry>();
-    ArrayList<RadarEntry> entries2 = new ArrayList<RadarEntry>();
+    ArrayList<RadarEntry> entries1 = new ArrayList<>();
+    ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
-    for (int i = 0; i < cnt; i++) {
+    for (int i = 0; i < numEventsChart; i++) {
       float val1 = (float) (Math.random() * mult) + min;
       entries1.add(new RadarEntry(val1));
 
@@ -252,7 +248,7 @@ public class RadarChartActivitry extends DemoBase {
     set2.setDrawHighlightCircleEnabled(true);
     set2.setDrawHighlightIndicators(false);
 
-    ArrayList<IRadarDataSet> sets = new ArrayList<IRadarDataSet>();
+    ArrayList<IRadarDataSet> sets = new ArrayList<>();
     sets.add(set1);
     sets.add(set2);
 

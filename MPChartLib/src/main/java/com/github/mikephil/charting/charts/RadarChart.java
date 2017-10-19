@@ -102,14 +102,18 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   }
 
   @Override public void notifyDataSetChanged() {
-    if (mData == null) return;
+    if (mData == null){
+      return;
+    }
 
     calcMinMax();
 
     mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
     mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
-    if (mLegend != null && !mLegend.isLegendCustom()) mLegendRenderer.computeLegend(mData);
+    if (mLegend != null && !mLegend.isLegendCustom()){
+      mLegendRenderer.computeLegend(mData);
+    }
 
     calculateOffsets();
   }
@@ -127,22 +131,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   @Override protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
 
-    if (mData == null) return;
-
-    //        if (mYAxis.isEnabled())
-    //            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+    if (mData == null) {
+      return;
+    }
 
     if (mXAxis.isEnabled()) {
       mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
     }
 
-    if (isImageDrawMode) {
-      mXAxisRenderer.renderAxisImages(canvas);
-    } else {
+    if (!isImageDrawMode) {
       mXAxisRenderer.renderAxisLabels(canvas);
     }
 
-    if (mDrawWeb) mRenderer.drawExtras(canvas);
+    if (mDrawWeb){
+      mRenderer.drawExtras(canvas);
+    }
 
     if (mYAxis.isEnabled() && mYAxis.isDrawLimitLinesBehindDataEnabled()) {
       mYAxisRenderer.renderLimitLines(canvas);
@@ -150,15 +153,15 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     mRenderer.drawData(canvas);
 
-    if (valuesToHighlight()) mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
+    if (valuesToHighlight()){
+      mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
+    }
 
     if (mYAxis.isEnabled() && !mYAxis.isDrawLimitLinesBehindDataEnabled()) {
       mYAxisRenderer.renderLimitLines(canvas);
     }
 
-    if (isImageDrawMode) {
-      mYAxisRenderer.renderAxisImages(canvas);
-    } else {
+    if (!isImageDrawMode) {
       mYAxisRenderer.renderAxisLabels(canvas);
     }
 

@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.components;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.util.Log;
@@ -421,16 +420,7 @@ public abstract class AxisBase extends ComponentBase {
       return getValueFormatter().getFormattedValue(mEntries[index], this);
     }
   }
-
-  public Bitmap getImage(int index) {
-
-    if (index < 0 || index >= mEntries.length) {
-      return null;
-    } else {
-      return getImageFormatter().getImage(mEntries[index], this);
-    }
-  }
-
+  
   /**
    * Sets the formatter to be used for formatting the axis labels. If no formatter is set, the
    * chart will

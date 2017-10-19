@@ -229,6 +229,35 @@ public class RadarChartRenderer extends LineRadarRenderer {
       Utils.getPosition(center, Utils.getScreenWidth(),
           sliceangle * i + rotationangle, p);
       c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
+
+      Drawable drawable = mChart.getXAxis().getImageFormatter().getImage(mChart.getXAxis().mEntries[i / 2], mChart.getXAxis());
+
+
+
+
+      if ( center.x == p.x){
+        p.x = p.x - drawable.getW() / 2;
+        if (center.y > p.y){
+          p.y = p.y - drawable.getWidth();
+        }else{
+          p.y = p.y + drawable.getWidth() / 3;
+        }
+      }else if ( center.x > p.x){
+        p.x = p.x - drawable.getWidth();
+      }else{
+        p.x = p.x + drawable.getWidth() / 2;
+      }
+
+
+
+      mWebPaint.setColor(Color.RED);
+      c.drawCircle( p.x, p.y, 20, mWebPaint);
+      //c.drawBitmap(drawable, p.x, p.y, null);
+      Utils.drawImage(c, drawable, (int)p.x, (int)p.y, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+
+
+
     }
     MPPointF.recycleInstance(p);
 

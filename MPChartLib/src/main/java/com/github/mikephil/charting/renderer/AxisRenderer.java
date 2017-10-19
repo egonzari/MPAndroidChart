@@ -265,13 +265,6 @@ public abstract class AxisRenderer extends Renderer {
     public abstract void renderAxisLabels(Canvas c);
 
     /**
-     * Draws the axis drawable to the screen.
-     *
-     * @param c
-     */
-    public abstract void renderAxisImages(Canvas c);
-
-    /**
      * Draws the grid lines belonging to the axis.
      *
      * @param c

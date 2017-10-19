@@ -1,6 +1,5 @@
 package com.github.mikephil.charting.renderer;
 
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -47,43 +46,6 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
           pOut);
 
       drawLabel(c, label, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f, drawLabelAnchor,
-          labelRotationAngleDegrees);
-    }
-
-    MPPointF.recycleInstance(center);
-    MPPointF.recycleInstance(pOut);
-    MPPointF.recycleInstance(drawLabelAnchor);
-  }
-
-  public void renderAxisImages(Canvas c) {
-
-    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
-
-    final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
-    final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);
-
-    mAxisLabelPaint.setTypeface(mXAxis.getTypeface());
-    mAxisLabelPaint.setTextSize(mXAxis.getTextSize());
-    mAxisLabelPaint.setColor(mXAxis.getTextColor());
-
-    float sliceangle = mChart.getSliceAngle();
-
-    // calculate the factor that is needed for transforming the value to
-    // pixels
-    float factor = mChart.getFactor();
-
-    MPPointF center = mChart.getCenterOffsets();
-    MPPointF pOut = MPPointF.getInstance(0, 0);
-    for (int i = 0; i < mChart.getData().getMaxEntryCountSet().getEntryCount(); i++) {
-
-      Bitmap drawable = mXAxis.getImageFormatter().getImage(i, mXAxis);
-
-      float angle = (sliceangle * i + mChart.getRotationAngle()) % 360f;
-
-      Utils.getPosition(center, mChart.getYRange() * factor + mXAxis.mLabelRotatedWidth / 2f, angle,
-          pOut);
-
-      drawImage(c, drawable, pOut.x, pOut.y - mXAxis.mLabelRotatedHeight / 2.f, drawLabelAnchor,
           labelRotationAngleDegrees);
     }
 
