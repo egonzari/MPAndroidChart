@@ -93,9 +93,8 @@ public class RadarChartActivitry extends DemoBase {
                 ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_camera))
         };
 
-        @Override public SeatRadarChartAxis getImage(float value, AxisBase axis) {
-          return parameters[(int) value % parameters.length];
-          // return ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher);
+        @Override public SeatRadarChartAxis getImage(int index) {
+          return parameters[index];
         }
 
         public SeatRadarChartAxis[] getParameters() {

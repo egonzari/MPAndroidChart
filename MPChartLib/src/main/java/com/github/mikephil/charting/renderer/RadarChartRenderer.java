@@ -234,7 +234,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
       //Draw image parameter
       SeatRadarChartAxis seatAxis = mChart.getXAxis()
           .getImageFormatter()
-          .getImage(mChart.getXAxis().mEntries[i], mChart.getXAxis());
+          .getImage(i);
       Drawable drawable = seatAxis.getDrawable();
       Utils.getPosition(center, Utils.getScreenWidth() + drawable.getIntrinsicWidth() / 1.5f,
           sliceangle * i + rotationangle, p);
