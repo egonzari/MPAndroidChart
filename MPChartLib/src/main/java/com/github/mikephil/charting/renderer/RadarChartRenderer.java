@@ -212,7 +212,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
     drawWeb(c);
   }
 
-  protected void drawWeb(Canvas c) {
+  protected void drawWeb(Canvas canvas) {
 
     float sliceangle = mChart.getSliceAngle();
 
@@ -230,17 +230,31 @@ public class RadarChartRenderer extends LineRadarRenderer {
     MPPointF p = MPPointF.getInstance(0, 0);
     for (int i = 0; i < maxEntryCount; i += xIncrements) {
       Utils.getPosition(center, Utils.getScreenWidth(), sliceangle * i + rotationangle, p);
-      c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
+      canvas.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
       //Draw image parameter
-      SeatRadarChartAxis seatAxis = mChart.getXAxis()
-          .getImageFormatter()
-          .getImage(i);
+      SeatRadarChartAxis seatAxis = mChart.getXAxis().getImageFormatter().getImage(i);
       Drawable drawable = seatAxis.getDrawable();
+
+      float distanceX = Math.abs(center.x - p.x);
+      float distanceY = Math.abs(center.y - p.y);
+      if ( center.x >= p.x){
+        seatAxis.setDrawXMarker(center.x-(distanceX/1.15f));
+      }else{
+        seatAxis.setDrawXMarker(center.x+(distanceX/1.25f));
+      }
+      if ( center.y >= p.y){
+        seatAxis.setDrawYMarker(center.y-(distanceY/1.25f));
+      }else{
+        seatAxis.setDrawYMarker(center.y+(distanceY/1.25f));
+      }
+
+      //seatAxis.setDrawXMarker(p.x);
+      //seatAxis.setDrawYMarker(p.y);
       Utils.getPosition(center, Utils.getScreenWidth() + drawable.getIntrinsicWidth() / 1.5f,
           sliceangle * i + rotationangle, p);
       seatAxis.setDrawX(p.x);
       seatAxis.setDrawY(p.y);
-      Utils.drawImage(c, drawable, (int) p.x, (int) p.y, drawable.getIntrinsicWidth(),
+      Utils.drawImage(canvas, drawable, (int) p.x, (int) p.y, drawable.getIntrinsicWidth(),
           drawable.getIntrinsicHeight());
     }
     MPPointF.recycleInstance(p);
@@ -256,7 +270,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
     for (int j = 0; j < numCircles; j++) {
       float circleRadius = Utils.getScreenWidth();
       circleRadius -= j * spaceCircle;
-      c.drawCircle(center.x, center.y, circleRadius, mWebPaint);
+      canvas.drawCircle(center.x, center.y, circleRadius, mWebPaint);
     }
   }
 

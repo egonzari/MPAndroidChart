@@ -694,15 +694,15 @@ public abstract class Utils {
     return android.os.Build.VERSION.SDK_INT;
   }
 
-  public static boolean isRadarAxisClicked(SeatRadarChartAxis[] axis, float x, float y) {
-    boolean axisClicked = false;
+  public static SeatRadarChartAxis getRadarAxisClicked(SeatRadarChartAxis[] axis, float x, float y) {
+    SeatRadarChartAxis axisClicked = null;
     for (SeatRadarChartAxis item : axis) {
-      float marginXLeft = item.getDrawX() - (item.getDrawable().getIntrinsicWidth() / 2);
-      float marginXRight = item.getDrawX() + (item.getDrawable().getIntrinsicWidth() / 2);
-      float marginYTop = item.getDrawY() + (item.getDrawable().getIntrinsicHeight() / 2);
-      float marginYBottom = item.getDrawY() - (item.getDrawable().getIntrinsicHeight() / 2);
+      float marginXLeft = item.getDrawX() - (item.getWidth() / 2);
+      float marginXRight = item.getDrawX() + (item.getWidth() / 2);
+      float marginYTop = item.getDrawY() + (item.getHeight() / 2);
+      float marginYBottom = item.getDrawY() - (item.getHeight() / 2);
       if (x >= marginXLeft && x < marginXRight && y >= marginYBottom && y < marginYTop) {
-        axisClicked = true;
+        axisClicked = item;
       }
     }
     return axisClicked;

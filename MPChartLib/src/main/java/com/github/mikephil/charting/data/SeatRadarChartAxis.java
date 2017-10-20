@@ -16,6 +16,10 @@ public class SeatRadarChartAxis {
 
   private float drawY;
 
+  private float drawXMarker;
+
+  private float drawYMarker;
+
   private String description = "This is an Axis dude!";
 
   public SeatRadarChartAxis() {
@@ -49,11 +53,35 @@ public class SeatRadarChartAxis {
     this.drawY = drawY;
   }
 
+  public float getDrawXMarker() {
+    return drawXMarker;
+  }
+
+  public void setDrawXMarker(float drawXMarker) {
+    this.drawXMarker = drawXMarker;
+  }
+
+  public float getDrawYMarker() {
+    return drawYMarker;
+  }
+
+  public void setDrawYMarker(float drawYMarker) {
+    this.drawYMarker = drawYMarker;
+  }
+
   public String getDescription() {
     return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public int getWidth() {
+    return getDrawable().getIntrinsicWidth();
+  }
+
+  public int getHeight() {
+    return getDrawable().getIntrinsicHeight();
   }
 }
