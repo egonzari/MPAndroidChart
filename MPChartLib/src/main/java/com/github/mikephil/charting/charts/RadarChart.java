@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.RadarHighlighter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
@@ -102,7 +103,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   }
 
   @Override public void notifyDataSetChanged() {
-    if (mData == null){
+    if (mData == null) {
       return;
     }
 
@@ -111,7 +112,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
     mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
-    if (mLegend != null && !mLegend.isLegendCustom()){
+    if (mLegend != null && !mLegend.isLegendCustom()) {
       mLegendRenderer.computeLegend(mData);
     }
 
@@ -143,7 +144,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
       mXAxisRenderer.renderAxisLabels(canvas);
     }
 
-    if (mDrawWeb){
+    if (mDrawWeb) {
       mRenderer.drawExtras(canvas);
     }
 
@@ -153,7 +154,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     mRenderer.drawData(canvas);
 
-    if (valuesToHighlight()){
+    if (valuesToHighlight()) {
       mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
     }
 
@@ -172,6 +173,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
     drawDescription(canvas);
 
     drawMarkers(canvas);
+
+    if (selectedPosition != null) {
+      SeatRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
+      if (Utils.isRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1])){
+
+      }
+      selectedPosition = null;
+    }
   }
 
   /**

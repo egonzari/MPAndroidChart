@@ -9,6 +9,7 @@ import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -95,9 +96,11 @@ public class RadarChartRenderer extends LineRadarRenderer {
       mRenderPaint.setColor(dataSet.getColor(j));
 
       RadarEntry e = dataSet.getEntryForIndex(j);
-
-      Utils.getPosition(center, (e.getY() - mChart.getYChartMin()) * factor * phaseY,
-          sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
+      float dist = (e.getY() - mChart.getYChartMin()) * factor * phaseY;
+      if (dist > Utils.getScreenWidth()) {
+        dist = Utils.getScreenWidth();
+      }
+      Utils.getPosition(center, dist, sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
 
       if (Float.isNaN(pOut.x)) continue;
 
@@ -229,11 +232,14 @@ public class RadarChartRenderer extends LineRadarRenderer {
       Utils.getPosition(center, Utils.getScreenWidth(), sliceangle * i + rotationangle, p);
       c.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
       //Draw image parameter
-      Drawable drawable = mChart.getXAxis()
+      SeatRadarChartAxis seatAxis = mChart.getXAxis()
           .getImageFormatter()
-          .getImage(mChart.getXAxis().mEntries[i / 2], mChart.getXAxis());
+          .getImage(mChart.getXAxis().mEntries[i], mChart.getXAxis());
+      Drawable drawable = seatAxis.getDrawable();
       Utils.getPosition(center, Utils.getScreenWidth() + drawable.getIntrinsicWidth() / 1.5f,
           sliceangle * i + rotationangle, p);
+      seatAxis.setDrawX(p.x);
+      seatAxis.setDrawY(p.y);
       Utils.drawImage(c, drawable, (int) p.x, (int) p.y, drawable.getIntrinsicWidth(),
           drawable.getIntrinsicHeight());
     }

@@ -49,6 +49,8 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
      */
     protected float mMinOffset = 0.f;
 
+    protected float[] selectedPosition = null;
+
     public PieRadarChartBase(Context context) {
         super(context);
     }
@@ -462,6 +464,14 @@ public abstract class PieRadarChartBase<T extends ChartData<? extends IDataSet<?
     public float getYChartMin() {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    public float[] getSelectedPosition() {
+        return selectedPosition;
+    }
+
+    public void setSelectedPosition(float[] selectedPosition) {
+        this.selectedPosition = selectedPosition;
     }
 
     /**

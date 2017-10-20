@@ -2,16 +2,12 @@
 package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
-import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-
 import com.github.mikephil.charting.charts.PieRadarChartBase;
-import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
-
 import java.util.ArrayList;
 
 /**
@@ -148,8 +144,11 @@ public class PieRadarChartTouchListener extends ChartTouchListener<PieRadarChart
             return false;
         }
 
-        Highlight high = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
-        performHighlight(high, e);
+        float [] selectedPosition = new float[]{e.getX(), e.getY()};
+        mChart.setSelectedPosition(selectedPosition);
+        //Highlight high = mChart.getHighlightByTouchPoint(e.getX(), e.getY());
+        //performHighlight(high, e);
+        mChart.invalidate();
 
         return true;
     }

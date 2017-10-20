@@ -19,7 +19,9 @@ public class XAxisRendererRadarChart extends XAxisRenderer {
 
   @Override public void renderAxisLabels(Canvas c) {
 
-    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()) return;
+    if (!mXAxis.isEnabled() || !mXAxis.isDrawLabelsEnabled()){
+      return;
+    }
 
     final float labelRotationAngleDegrees = mXAxis.getLabelRotationAngle();
     final MPPointF drawLabelAnchor = MPPointF.getInstance(0.5f, 0.25f);

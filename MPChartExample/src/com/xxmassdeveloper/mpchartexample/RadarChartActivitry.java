@@ -2,7 +2,6 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
@@ -20,6 +19,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.formatter.IAxisImageFormatter;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
@@ -31,6 +31,8 @@ import java.util.ArrayList;
 public class RadarChartActivitry extends DemoBase {
 
   private RadarChart mChart;
+
+  private static final int NUM_PARAMETERS = 6;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -75,9 +77,29 @@ public class RadarChartActivitry extends DemoBase {
     xAxis.setXOffset(0f);
     if (mChart.isImageDrawMode()) {
       xAxis.setImageFormatter(new IAxisImageFormatter() {
-        @Override public Drawable getImage(float value, AxisBase axis) {
-          return ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_launcher)
-              ;//BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher);
+
+        private SeatRadarChartAxis[] parameters = new SeatRadarChartAxis[] {
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher)),
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_delete)),
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_add)),
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_agenda)),
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_call)),
+            new SeatRadarChartAxis(
+                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_camera))
+        };
+
+        @Override public SeatRadarChartAxis getImage(float value, AxisBase axis) {
+          return parameters[(int) value % parameters.length];
+          // return ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher);
+        }
+
+        public SeatRadarChartAxis[] getParameters() {
+          return parameters;
         }
       });
     } else {
@@ -215,14 +237,13 @@ public class RadarChartActivitry extends DemoBase {
     w.getDefaultDisplay().getSize(size);
     float mult = 80;
     float min = 20;
-    int numEventsChart = 6;
 
     ArrayList<RadarEntry> entries1 = new ArrayList<>();
     ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
-    for (int i = 0; i < numEventsChart; i++) {
+    for (int i = 0; i < NUM_PARAMETERS; i++) {
       float val1 = (float) (Math.random() * mult) + min;
       entries1.add(new RadarEntry(val1));
 

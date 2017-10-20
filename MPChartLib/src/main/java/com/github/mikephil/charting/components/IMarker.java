@@ -3,6 +3,7 @@ package com.github.mikephil.charting.components;
 import android.graphics.Canvas;
 
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 
@@ -35,6 +36,8 @@ public interface IMarker {
      *                  selected range or stack-index (only stacked bar entries).
      */
     void refreshContent(Entry e, Highlight highlight);
+
+    void showSeatParameterDetail(SeatRadarChartAxis seatRadarChartParameter);
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

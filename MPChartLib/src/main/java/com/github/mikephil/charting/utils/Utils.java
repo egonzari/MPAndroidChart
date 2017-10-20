@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import java.util.List;
@@ -691,5 +692,19 @@ public abstract class Utils {
 
   public static int getSDKInt() {
     return android.os.Build.VERSION.SDK_INT;
+  }
+
+  public static boolean isRadarAxisClicked(SeatRadarChartAxis[] axis, float x, float y) {
+    boolean axisClicked = false;
+    for (SeatRadarChartAxis item : axis) {
+      float marginXLeft = item.getDrawX() - (item.getDrawable().getIntrinsicWidth() / 2);
+      float marginXRight = item.getDrawX() + (item.getDrawable().getIntrinsicWidth() / 2);
+      float marginYTop = item.getDrawY() + (item.getDrawable().getIntrinsicHeight() / 2);
+      float marginYBottom = item.getDrawY() - (item.getDrawable().getIntrinsicHeight() / 2);
+      if (x >= marginXLeft && x < marginXRight && y >= marginYBottom && y < marginYTop) {
+        axisClicked = true;
+      }
+    }
+    return axisClicked;
   }
 }

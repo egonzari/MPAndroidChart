@@ -1,7 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
-import android.graphics.drawable.Drawable;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 
 /**
  * Created by Philipp Jahoda on 20/09/15.
@@ -18,5 +18,7 @@ public interface IAxisImageFormatter {
    * @param value the value to be formatted
    * @param axis the axis the value belongs to
    */
-  Drawable getImage(float value, AxisBase axis);
+  SeatRadarChartAxis getImage(float value, AxisBase axis);
+
+  SeatRadarChartAxis[] getParameters();
 }
