@@ -96,7 +96,8 @@ public class RadarChartRenderer extends LineRadarRenderer {
       mRenderPaint.setColor(dataSet.getColor(j));
 
       RadarEntry e = dataSet.getEntryForIndex(j);
-      float dist = (e.getY() - mChart.getYChartMin()) * factor * phaseY;
+      float dist = (e.getY() * Utils.getScreenWidth()) / 100;
+
       if (dist > Utils.getScreenWidth()) {
         dist = Utils.getScreenWidth();
       }

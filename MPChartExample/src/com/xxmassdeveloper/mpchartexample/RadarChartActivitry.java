@@ -2,6 +2,7 @@ package com.xxmassdeveloper.mpchartexample;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
@@ -26,13 +27,17 @@ import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.xxmassdeveloper.mpchartexample.custom.SeatRadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class RadarChartActivitry extends DemoBase {
 
   private RadarChart mChart;
 
   private static final int NUM_PARAMETERS = 6;
+
+  private SeatRadarChartAxis[] axis = new SeatRadarChartAxis[NUM_PARAMETERS];
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -78,28 +83,12 @@ public class RadarChartActivitry extends DemoBase {
     if (mChart.isImageDrawMode()) {
       xAxis.setImageFormatter(new IAxisImageFormatter() {
 
-        private SeatRadarChartAxis[] parameters = new SeatRadarChartAxis[] {
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher),
-                "Axis 1", "86/100"), new SeatRadarChartAxis(
-            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_delete),
-            "Axis 2", "80/100"), new SeatRadarChartAxis(
-            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_add),
-            "Axis 3", "65/100"), new SeatRadarChartAxis(
-            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_agenda),
-            "Axis 4", "44/100"), new SeatRadarChartAxis(
-            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_call),
-            "Axis 5", "23/100"), new SeatRadarChartAxis(
-            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_camera),
-            "Axis 6", "98/100")
-        };
-
         @Override public SeatRadarChartAxis getImage(int index) {
-          return parameters[index];
+          return axis[index];
         }
 
         public SeatRadarChartAxis[] getParameters() {
-          return parameters;
+          return axis;
         }
       });
     } else {
@@ -235,25 +224,28 @@ public class RadarChartActivitry extends DemoBase {
     Point size = new Point();
     WindowManager w = getWindowManager();
     w.getDefaultDisplay().getSize(size);
-    float mult = 80;
-    float min = 20;
+    float max = 100;
+    float min = 0;
 
     ArrayList<RadarEntry> entries1 = new ArrayList<>();
     ArrayList<RadarEntry> entries2 = new ArrayList<>();
 
     // NOTE: The order of the entries when being added to the entries array determines their position around the center of
     // the chart.
+    DecimalFormat df = new DecimalFormat();
+    df.setMaximumFractionDigits(2);
     for (int i = 0; i < NUM_PARAMETERS; i++) {
-      float val1 = (float) (Math.random() * mult) + min;
+      float val1 = new Random().nextFloat() * (max - min) + min;
       entries1.add(new RadarEntry(val1));
-
-      float val2 = (float) (Math.random() * mult) + min;
+      float val2 = new Random().nextFloat() * (max - min) + min;
+      addAxiToList(i, "Axis " + i, val2,
+          ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher));
       entries2.add(new RadarEntry(val2));
     }
 
     RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
-    set1.setColor(Color.rgb(103, 110, 129));
-    set1.setFillColor(Color.rgb(103, 110, 129));
+    set1.setColor(Color.rgb(201, 201, 201));
+    set1.setFillColor(Color.rgb(201, 201, 201));
     set1.setDrawFilled(true);
     set1.setFillAlpha(180);
     set1.setLineWidth(2f);
@@ -261,8 +253,8 @@ public class RadarChartActivitry extends DemoBase {
     set1.setDrawHighlightIndicators(false);
 
     RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
-    set2.setColor(Color.rgb(121, 162, 175));
-    set2.setFillColor(Color.rgb(121, 162, 175));
+    set2.setColor(Color.rgb(220, 48, 58));
+    set2.setFillColor(Color.rgb(220, 48, 58));
     set2.setDrawFilled(true);
     set2.setFillAlpha(180);
     set2.setLineWidth(2f);
@@ -281,5 +273,9 @@ public class RadarChartActivitry extends DemoBase {
 
     mChart.setData(data);
     mChart.invalidate();
+  }
+
+  private void addAxiToList(int position, String name, float value, Drawable drawable) {
+    axis[position] = SeatRadarChartAxis.createInitialItem(name, value, drawable);
   }
 }

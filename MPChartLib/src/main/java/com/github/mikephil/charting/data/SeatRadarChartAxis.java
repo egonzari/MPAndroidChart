@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.data;
 
 import android.graphics.drawable.Drawable;
+import java.text.DecimalFormat;
 
 /**
  * Edu-MPAndroidChart
@@ -104,5 +105,18 @@ public class SeatRadarChartAxis {
 
   public int getHeight() {
     return getDrawable().getIntrinsicHeight();
+  }
+
+  public static SeatRadarChartAxis createInitialItem(String name, float value, Drawable drawable) {
+    SeatRadarChartAxis seatRadarChartAxis = new SeatRadarChartAxis();
+
+    seatRadarChartAxis.setName(name);
+
+    DecimalFormat df = new DecimalFormat();
+    df.setMaximumFractionDigits(2);
+    seatRadarChartAxis.setPercent(df.format(value) + "/100");
+
+    seatRadarChartAxis.setDrawable(drawable);
+    return seatRadarChartAxis;
   }
 }
