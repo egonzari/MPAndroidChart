@@ -117,6 +117,8 @@ public class MarkerView extends RelativeLayout implements IMarker {
 
     }
 
+
+
     @Override
     public void draw(Canvas canvas, float posX, float posY) {
 

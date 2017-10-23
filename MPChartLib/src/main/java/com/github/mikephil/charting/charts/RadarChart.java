@@ -184,12 +184,18 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
           Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
       if (axisClicked != null) {
         mMarker.refreshContent(axisClicked);
-        mMarker.draw(canvas, axisClicked.getDrawXMarker(), axisClicked.getDrawYMarker());
-        //TODO print indicator marker
-        /*Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawCircle(axisClicked.getDrawXMarker(), axisClicked.getDrawYMarker(), 60, paint);
-        */
+        float positionX = axisClicked.getDrawXMarker();
+        float positionY = axisClicked.getDrawYMarker();
+        if (axisClicked.getDrawYMarker() > axisClicked.getDrawY()) {
+          positionY -= 60;
+        } else {
+          if ( axisClicked.getDrawX() != axisClicked.getDrawXMarker()){
+            positionY += 140;
+          }else {
+            positionY += 60;
+          }
+        }
+        mMarker.draw(canvas, positionX, positionY);
       }
       selectedPosition = null;
     }

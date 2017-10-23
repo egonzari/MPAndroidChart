@@ -56,7 +56,7 @@ public class RadarChartActivitry extends DemoBase {
     mChart.setWebColorInner(Color.LTGRAY);
     mChart.setWebAlpha(100);
     mChart.setImageDrawMode(true);
-    mChart.setRotationEnabled(true);
+    mChart.setRotationEnabled(false);
     mChart.setNumCircles(4);
 
     // create a custom MarkerView (extend MarkerView) and specify the layout
