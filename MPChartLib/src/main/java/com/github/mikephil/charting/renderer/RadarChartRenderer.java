@@ -249,7 +249,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
     mWebPaint.setColor(mChart.getWebColorInner());
     mWebPaint.setAlpha(mChart.getWebAlpha());
 
-    //A partir de aqui es el circulo que se crea en funcion del labelCount
+    //Circles that represents the radar using labelCount
     int numCircles = mChart.getNumCircles();
     int spaceCircle = 120;
     for (int j = 0; j < numCircles; j++) {
