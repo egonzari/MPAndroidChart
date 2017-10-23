@@ -128,6 +128,28 @@ public class YAxisRenderer extends AxisRenderer {
         }
     }
 
+    /**
+     * draws the y-labels on the specified x-position
+     *
+     * @param fixedPosition
+     * @param positions
+     */
+    protected void drawYImages(Canvas c, float fixedPosition, float[] positions, float offset) {
+
+        final int from = mYAxis.isDrawBottomYLabelEntryEnabled() ? 0 : 1;
+        final int to = mYAxis.isDrawTopYLabelEntryEnabled()
+            ? mYAxis.mEntryCount
+            : (mYAxis.mEntryCount - 1);
+
+        // draw
+        for (int i = from; i < to; i++) {
+
+            String text = mYAxis.getFormattedLabel(i);
+
+            c.drawText(text, fixedPosition, positions[i * 2 + 1] + offset, mAxisLabelPaint);
+        }
+    }
+
     protected Path mRenderGridLinesPath = new Path();
     @Override
     public void renderGridLines(Canvas c) {

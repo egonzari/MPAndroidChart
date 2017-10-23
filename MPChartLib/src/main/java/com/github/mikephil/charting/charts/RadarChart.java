@@ -1,4 +1,3 @@
-
 package com.github.mikephil.charting.charts;
 
 import android.content.Context;
@@ -6,10 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
 import com.github.mikephil.charting.data.RadarData;
+import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.RadarHighlighter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
@@ -24,338 +23,360 @@ import com.github.mikephil.charting.utils.Utils;
  */
 public class RadarChart extends PieRadarChartBase<RadarData> {
 
-    /**
-     * width of the main web lines
-     */
-    private float mWebLineWidth = 2.5f;
+  /**
+   * width of the main web lines
+   */
+  private float mWebLineWidth = 2.5f;
 
-    /**
-     * width of the inner web lines
-     */
-    private float mInnerWebLineWidth = 1.5f;
+  /**
+   * width of the inner web lines
+   */
+  private float mInnerWebLineWidth = 1.5f;
 
-    /**
-     * color for the main web lines
-     */
-    private int mWebColor = Color.rgb(122, 122, 122);
+  /**
+   * color for the main web lines
+   */
+  private int mWebColor = Color.rgb(122, 122, 122);
 
-    /**
-     * color for the inner web
-     */
-    private int mWebColorInner = Color.rgb(122, 122, 122);
+  /**
+   * color for the inner web
+   */
+  private int mWebColorInner = Color.rgb(122, 122, 122);
 
-    /**
-     * transparency the grid is drawn with (0-255)
-     */
-    private int mWebAlpha = 150;
+  /**
+   * transparency the grid is drawn with (0-255)
+   */
+  private int mWebAlpha = 150;
 
-    /**
-     * flag indicating if the web lines should be drawn or not
-     */
-    private boolean mDrawWeb = true;
+  /**
+   * flag indicating if the web lines should be drawn or not
+   */
+  private boolean mDrawWeb = true;
 
-    /**
-     * modulus that determines how many labels and web-lines are skipped before the next is drawn
-     */
-    private int mSkipWebLineCount = 0;
+  /**
+   * modulus that determines how many labels and web-lines are skipped before the next is drawn
+   */
+  private int mSkipWebLineCount = 0;
 
-    /**
-     * the object reprsenting the y-axis labels
-     */
-    private YAxis mYAxis;
+  /**
+   * the object reprsenting the y-axis labels
+   */
+  private YAxis mYAxis;
 
-    protected YAxisRendererRadarChart mYAxisRenderer;
-    protected XAxisRendererRadarChart mXAxisRenderer;
+  protected YAxisRendererRadarChart mYAxisRenderer;
+  protected XAxisRendererRadarChart mXAxisRenderer;
 
-    public RadarChart(Context context) {
-        super(context);
+  protected int numCircles = 4;
+
+  public RadarChart(Context context) {
+    super(context);
+  }
+
+  public RadarChart(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
+
+  public RadarChart(Context context, AttributeSet attrs, int defStyle) {
+    super(context, attrs, defStyle);
+  }
+
+  @Override protected void init() {
+    super.init();
+
+    mYAxis = new YAxis(AxisDependency.LEFT);
+
+    mWebLineWidth = Utils.convertDpToPixel(1.5f);
+    mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
+
+    mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
+    mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
+    mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
+
+    mHighlighter = new RadarHighlighter(this);
+  }
+
+  @Override protected void calcMinMax() {
+    super.calcMinMax();
+
+    mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
+    mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
+  }
+
+  @Override public void notifyDataSetChanged() {
+    if (mData == null) {
+      return;
     }
 
-    public RadarChart(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    calcMinMax();
+
+    mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
+    mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
+
+    if (mLegend != null && !mLegend.isLegendCustom()) {
+      mLegendRenderer.computeLegend(mData);
     }
 
-    public RadarChart(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+    calculateOffsets();
+  }
+
+  private boolean isImageDrawMode = false;
+
+  public void setImageDrawMode(boolean imageDrawMode) {
+    isImageDrawMode = imageDrawMode;
+  }
+
+  public boolean isImageDrawMode() {
+    return isImageDrawMode;
+  }
+
+  @Override protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+
+    if (mData == null) {
+      return;
     }
 
-    @Override
-    protected void init() {
-        super.init();
-
-        mYAxis = new YAxis(AxisDependency.LEFT);
-
-        mWebLineWidth = Utils.convertDpToPixel(1.5f);
-        mInnerWebLineWidth = Utils.convertDpToPixel(0.75f);
-
-        mRenderer = new RadarChartRenderer(this, mAnimator, mViewPortHandler);
-        mYAxisRenderer = new YAxisRendererRadarChart(mViewPortHandler, mYAxis, this);
-        mXAxisRenderer = new XAxisRendererRadarChart(mViewPortHandler, mXAxis, this);
-
-        mHighlighter = new RadarHighlighter(this);
+    if (mXAxis.isEnabled()) {
+      mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
     }
 
-    @Override
-    protected void calcMinMax() {
-        super.calcMinMax();
-
-        mYAxis.calculate(mData.getYMin(AxisDependency.LEFT), mData.getYMax(AxisDependency.LEFT));
-        mXAxis.calculate(0, mData.getMaxEntryCountSet().getEntryCount());
+    if (!isImageDrawMode) {
+      mXAxisRenderer.renderAxisLabels(canvas);
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        if (mData == null)
-            return;
-
-        calcMinMax();
-
-        mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-        mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
-
-        if (mLegend != null && !mLegend.isLegendCustom())
-            mLegendRenderer.computeLegend(mData);
-
-        calculateOffsets();
+    if (mDrawWeb) {
+      mRenderer.drawExtras(canvas);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        if (mData == null)
-            return;
-
-//        if (mYAxis.isEnabled())
-//            mYAxisRenderer.computeAxis(mYAxis.mAxisMinimum, mYAxis.mAxisMaximum, mYAxis.isInverted());
-
-        if (mXAxis.isEnabled())
-            mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
-
-        mXAxisRenderer.renderAxisLabels(canvas);
-
-        if (mDrawWeb)
-            mRenderer.drawExtras(canvas);
-
-        if (mYAxis.isEnabled() && mYAxis.isDrawLimitLinesBehindDataEnabled())
-            mYAxisRenderer.renderLimitLines(canvas);
-
-        mRenderer.drawData(canvas);
-
-        if (valuesToHighlight())
-            mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
-
-        if (mYAxis.isEnabled() && !mYAxis.isDrawLimitLinesBehindDataEnabled())
-            mYAxisRenderer.renderLimitLines(canvas);
-
-        mYAxisRenderer.renderAxisLabels(canvas);
-
-        mRenderer.drawValues(canvas);
-
-        mLegendRenderer.renderLegend(canvas);
-
-        drawDescription(canvas);
-
-        drawMarkers(canvas);
+    if (mYAxis.isEnabled() && mYAxis.isDrawLimitLinesBehindDataEnabled()) {
+      mYAxisRenderer.renderLimitLines(canvas);
     }
 
-    /**
-     * Returns the factor that is needed to transform values into pixels.
-     *
-     * @return
-     */
-    public float getFactor() {
-        RectF content = mViewPortHandler.getContentRect();
-        return Math.min(content.width() / 2f, content.height() / 2f) / mYAxis.mAxisRange;
+    mRenderer.drawData(canvas);
+
+    if (valuesToHighlight()) {
+      mRenderer.drawHighlighted(canvas, mIndicesToHighlight);
     }
 
-    /**
-     * Returns the angle that each slice in the radar chart occupies.
-     *
-     * @return
-     */
-    public float getSliceAngle() {
-        return 360f / (float) mData.getMaxEntryCountSet().getEntryCount();
+    if (mYAxis.isEnabled() && !mYAxis.isDrawLimitLinesBehindDataEnabled()) {
+      mYAxisRenderer.renderLimitLines(canvas);
     }
 
-    @Override
-    public int getIndexForAngle(float angle) {
+    if (!isImageDrawMode) {
+      mYAxisRenderer.renderAxisLabels(canvas);
+    }
 
-        // take the current angle of the chart into consideration
-        float a = Utils.getNormalizedAngle(angle - getRotationAngle());
+    mRenderer.drawValues(canvas);
 
-        float sliceangle = getSliceAngle();
+    mLegendRenderer.renderLegend(canvas);
 
-        int max = mData.getMaxEntryCountSet().getEntryCount();
+    drawDescription(canvas);
 
-        int index = 0;
+    drawMarkers(canvas);
 
-        for (int i = 0; i < max; i++) {
+    drawSeatMarker(canvas);
+  }
 
-            float referenceAngle = sliceangle * (i + 1) - sliceangle / 2f;
-
-            if (referenceAngle > a) {
-                index = i;
-                break;
-            }
+  private void drawSeatMarker(Canvas canvas) {
+    if (selectedPosition != null) {
+      SeatRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
+      SeatRadarChartAxis axisClicked =
+          Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
+      if (axisClicked != null) {
+        mMarker.refreshContent(axisClicked);
+        float positionX = axisClicked.getDrawXMarker();
+        float positionY = axisClicked.getDrawYMarker();
+        if (axisClicked.getDrawYMarker() > axisClicked.getDrawY()) {
+          positionY -= 60;
+        } else {
+          if ( axisClicked.getDrawX() != axisClicked.getDrawXMarker()){
+            positionY += 140;
+          }else {
+            positionY += 60;
+          }
         }
+        mMarker.draw(canvas, positionX, positionY);
+      }
+      selectedPosition = null;
+    }
+  }
 
-        return index;
+  /**
+   * Returns the factor that is needed to transform values into pixels.
+   */
+  public float getFactor() {
+    RectF content = mViewPortHandler.getContentRect();
+    return Math.min(content.width() / 2f, content.height() / 2f) / mYAxis.mAxisRange;
+  }
+
+  /**
+   * Returns the angle that each slice in the radar chart occupies.
+   */
+  public float getSliceAngle() {
+    return 360f / (float) mData.getMaxEntryCountSet().getEntryCount();
+  }
+
+  @Override public int getIndexForAngle(float angle) {
+
+    // take the current angle of the chart into consideration
+    float a = Utils.getNormalizedAngle(angle - getRotationAngle());
+
+    float sliceangle = getSliceAngle();
+
+    int max = mData.getMaxEntryCountSet().getEntryCount();
+
+    int index = 0;
+
+    for (int i = 0; i < max; i++) {
+
+      float referenceAngle = sliceangle * (i + 1) - sliceangle / 2f;
+
+      if (referenceAngle > a) {
+        index = i;
+        break;
+      }
     }
 
-    /**
-     * Returns the object that represents all y-labels of the RadarChart.
-     *
-     * @return
-     */
-    public YAxis getYAxis() {
-        return mYAxis;
-    }
+    return index;
+  }
 
-    /**
-     * Sets the width of the web lines that come from the center.
-     *
-     * @param width
-     */
-    public void setWebLineWidth(float width) {
-        mWebLineWidth = Utils.convertDpToPixel(width);
-    }
+  /**
+   * Returns the object that represents all y-labels of the RadarChart.
+   */
+  public YAxis getYAxis() {
+    return mYAxis;
+  }
 
-    public float getWebLineWidth() {
-        return mWebLineWidth;
-    }
+  /**
+   * Sets the width of the web lines that come from the center.
+   */
+  public void setWebLineWidth(float width) {
+    mWebLineWidth = Utils.convertDpToPixel(width);
+  }
 
-    /**
-     * Sets the width of the web lines that are in between the lines coming from
-     * the center.
-     *
-     * @param width
-     */
-    public void setWebLineWidthInner(float width) {
-        mInnerWebLineWidth = Utils.convertDpToPixel(width);
-    }
+  public float getWebLineWidth() {
+    return mWebLineWidth;
+  }
 
-    public float getWebLineWidthInner() {
-        return mInnerWebLineWidth;
-    }
+  /**
+   * Sets the width of the web lines that are in between the lines coming from
+   * the center.
+   */
+  public void setWebLineWidthInner(float width) {
+    mInnerWebLineWidth = Utils.convertDpToPixel(width);
+  }
 
-    /**
-     * Sets the transparency (alpha) value for all web lines, default: 150, 255
-     * = 100% opaque, 0 = 100% transparent
-     *
-     * @param alpha
-     */
-    public void setWebAlpha(int alpha) {
-        mWebAlpha = alpha;
-    }
+  public float getWebLineWidthInner() {
+    return mInnerWebLineWidth;
+  }
 
-    /**
-     * Returns the alpha value for all web lines.
-     *
-     * @return
-     */
-    public int getWebAlpha() {
-        return mWebAlpha;
-    }
+  /**
+   * Sets the transparency (alpha) value for all web lines, default: 150, 255
+   * = 100% opaque, 0 = 100% transparent
+   */
+  public void setWebAlpha(int alpha) {
+    mWebAlpha = alpha;
+  }
 
-    /**
-     * Sets the color for the web lines that come from the center. Don't forget
-     * to use getResources().getColor(...) when loading a color from the
-     * resources. Default: Color.rgb(122, 122, 122)
-     *
-     * @param color
-     */
-    public void setWebColor(int color) {
-        mWebColor = color;
-    }
+  /**
+   * Returns the alpha value for all web lines.
+   */
+  public int getWebAlpha() {
+    return mWebAlpha;
+  }
 
-    public int getWebColor() {
-        return mWebColor;
-    }
+  /**
+   * Sets the color for the web lines that come from the center. Don't forget
+   * to use getResources().getColor(...) when loading a color from the
+   * resources. Default: Color.rgb(122, 122, 122)
+   */
+  public void setWebColor(int color) {
+    mWebColor = color;
+  }
 
-    /**
-     * Sets the color for the web lines in between the lines that come from the
-     * center. Don't forget to use getResources().getColor(...) when loading a
-     * color from the resources. Default: Color.rgb(122, 122, 122)
-     *
-     * @param color
-     */
-    public void setWebColorInner(int color) {
-        mWebColorInner = color;
-    }
+  public int getWebColor() {
+    return mWebColor;
+  }
 
-    public int getWebColorInner() {
-        return mWebColorInner;
-    }
+  /**
+   * Sets the color for the web lines in between the lines that come from the
+   * center. Don't forget to use getResources().getColor(...) when loading a
+   * color from the resources. Default: Color.rgb(122, 122, 122)
+   */
+  public void setWebColorInner(int color) {
+    mWebColorInner = color;
+  }
 
-    /**
-     * If set to true, drawing the web is enabled, if set to false, drawing the
-     * whole web is disabled. Default: true
-     *
-     * @param enabled
-     */
-    public void setDrawWeb(boolean enabled) {
-        mDrawWeb = enabled;
-    }
+  public int getWebColorInner() {
+    return mWebColorInner;
+  }
 
-    /**
-     * Sets the number of web-lines that should be skipped on chart web before the
-     * next one is drawn. This targets the lines that come from the center of the RadarChart.
-     *
-     * @param count if count = 1 -> 1 line is skipped in between
-     */
-    public void setSkipWebLineCount(int count) {
+  /**
+   * If set to true, drawing the web is enabled, if set to false, drawing the
+   * whole web is disabled. Default: true
+   */
+  public void setDrawWeb(boolean enabled) {
+    mDrawWeb = enabled;
+  }
 
-        mSkipWebLineCount = Math.max(0, count);
-    }
+  /**
+   * Sets the number of web-lines that should be skipped on chart web before the
+   * next one is drawn. This targets the lines that come from the center of the RadarChart.
+   *
+   * @param count if count = 1 -> 1 line is skipped in between
+   */
+  public void setSkipWebLineCount(int count) {
 
-    /**
-     * Returns the modulus that is used for skipping web-lines.
-     *
-     * @return
-     */
-    public int getSkipWebLineCount() {
-        return mSkipWebLineCount;
-    }
+    mSkipWebLineCount = Math.max(0, count);
+  }
 
-    @Override
-    protected float getRequiredLegendOffset() {
-        return mLegendRenderer.getLabelPaint().getTextSize() * 4.f;
-    }
+  /**
+   * Returns the modulus that is used for skipping web-lines.
+   */
+  public int getSkipWebLineCount() {
+    return mSkipWebLineCount;
+  }
 
-    @Override
-    protected float getRequiredBaseOffset() {
-        return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled() ?
-                mXAxis.mLabelRotatedWidth :
-                Utils.convertDpToPixel(10f);
-    }
+  @Override protected float getRequiredLegendOffset() {
+    return mLegendRenderer.getLabelPaint().getTextSize() * 4.f;
+  }
 
-    @Override
-    public float getRadius() {
-        RectF content = mViewPortHandler.getContentRect();
-        return Math.min(content.width() / 2f, content.height() / 2f);
-    }
+  @Override protected float getRequiredBaseOffset() {
+    return mXAxis.isEnabled() && mXAxis.isDrawLabelsEnabled() ? mXAxis.mLabelRotatedWidth
+        : Utils.convertDpToPixel(10f);
+  }
 
-    /**
-     * Returns the maximum value this chart can display on it's y-axis.
-     */
-    public float getYChartMax() {
-        return mYAxis.mAxisMaximum;
-    }
+  @Override public float getRadius() {
+    RectF content = mViewPortHandler.getContentRect();
+    return Math.min(content.width() / 2f, content.height() / 2f);
+  }
 
-    /**
-     * Returns the minimum value this chart can display on it's y-axis.
-     */
-    public float getYChartMin() {
-        return mYAxis.mAxisMinimum;
-    }
+  /**
+   * Returns the maximum value this chart can display on it's y-axis.
+   */
+  public float getYChartMax() {
+    return mYAxis.mAxisMaximum;
+  }
 
-    /**
-     * Returns the range of y-values this chart can display.
-     *
-     * @return
-     */
-    public float getYRange() {
-        return mYAxis.mAxisRange;
-    }
+  /**
+   * Returns the minimum value this chart can display on it's y-axis.
+   */
+  public float getYChartMin() {
+    return mYAxis.mAxisMinimum;
+  }
+
+  /**
+   * Returns the range of y-values this chart can display.
+   */
+  public float getYRange() {
+    return mYAxis.mAxisRange;
+  }
+
+  public int getNumCircles() {
+    return numCircles;
+  }
+
+  public void setNumCircles(int numCircles) {
+    this.numCircles = numCircles;
+  }
 }
