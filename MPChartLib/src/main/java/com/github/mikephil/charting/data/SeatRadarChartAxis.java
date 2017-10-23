@@ -20,13 +20,26 @@ public class SeatRadarChartAxis {
 
   private float drawYMarker;
 
-  private String description = "This is an Axis dude!";
+  private String name;
+
+  private String percent;
 
   public SeatRadarChartAxis() {
   }
 
   public SeatRadarChartAxis(Drawable drawable) {
     this.drawable = drawable;
+  }
+
+  public SeatRadarChartAxis(Drawable drawable, String name) {
+    this.drawable = drawable;
+    this.name = name;
+  }
+
+  public SeatRadarChartAxis(Drawable drawable, String name, String percent) {
+    this.drawable = drawable;
+    this.name = name;
+    this.percent = percent;
   }
 
   public Drawable getDrawable() {
@@ -69,12 +82,20 @@ public class SeatRadarChartAxis {
     this.drawYMarker = drawYMarker;
   }
 
-  public String getDescription() {
-    return description;
+  public String getName() {
+    return name;
   }
 
-  public void setDescription(String description) {
-    this.description = description;
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getPercent() {
+    return percent;
+  }
+
+  public void setPercent(String percent) {
+    this.percent = percent;
   }
 
   public int getWidth() {

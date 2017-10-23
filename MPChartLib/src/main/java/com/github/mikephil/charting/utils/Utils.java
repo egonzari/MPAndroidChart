@@ -694,7 +694,8 @@ public abstract class Utils {
     return android.os.Build.VERSION.SDK_INT;
   }
 
-  public static SeatRadarChartAxis getRadarAxisClicked(SeatRadarChartAxis[] axis, float x, float y) {
+  public static SeatRadarChartAxis getRadarAxisClicked(SeatRadarChartAxis[] axis, float x,
+      float y) {
     SeatRadarChartAxis axisClicked = null;
     for (SeatRadarChartAxis item : axis) {
       float marginXLeft = item.getDrawX() - (item.getWidth() / 2);
@@ -706,5 +707,21 @@ public abstract class Utils {
       }
     }
     return axisClicked;
+  }
+
+  public static void setSeatMarketPosition(SeatRadarChartAxis seatAxis, MPPointF center,
+      MPPointF p) {
+    float distanceX = Math.abs(center.x - p.x);
+    float distanceY = Math.abs(center.y - p.y);
+    if (center.x >= p.x) {
+      seatAxis.setDrawXMarker(p.x + (distanceX / 1.5f));
+    } else {
+      seatAxis.setDrawXMarker(p.x - (distanceX / 1.5f));
+    }
+    if (center.y >= p.y) {
+      seatAxis.setDrawYMarker(p.y + (distanceY / 1.5f));
+    } else {
+      seatAxis.setDrawYMarker(p.y - (distanceY / 8f));
+    }
   }
 }

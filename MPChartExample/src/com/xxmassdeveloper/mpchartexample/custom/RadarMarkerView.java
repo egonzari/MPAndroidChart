@@ -38,8 +38,8 @@ public class RadarMarkerView extends MarkerView {
         super.refreshContent(e, highlight);
     }
 
-    @Override public void showSeatParameterDetail(SeatRadarChartAxis seatRadarChartParameter) {
-        tvContent.setText(format.format(seatRadarChartParameter.getDescription()));
+    @Override public void refreshContent(SeatRadarChartAxis seatRadarChartParameter) {
+        tvContent.setText(format.format(seatRadarChartParameter.getName()));
         super.refreshContent(null, null);
     }
 

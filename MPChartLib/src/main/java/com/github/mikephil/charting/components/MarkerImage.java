@@ -127,7 +127,7 @@ public class MarkerImage implements IMarker {
 
     }
 
-    @Override public void showSeatParameterDetail(SeatRadarChartAxis seatRadarChartParameter) {
+    @Override public void refreshContent(SeatRadarChartAxis seatRadarChartParameter) {
 
     }
 

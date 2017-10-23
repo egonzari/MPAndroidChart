@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.RadarHighlighter;
@@ -175,15 +174,22 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     drawMarkers(canvas);
 
+    drawSeatMarker(canvas);
+  }
+
+  private void drawSeatMarker(Canvas canvas) {
     if (selectedPosition != null) {
       SeatRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
       SeatRadarChartAxis axisClicked =
           Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
       if (axisClicked != null) {
-        Entry entry = new Entry();
-        entry.setY(50);
-        mMarker.refreshContent(entry, null);
+        mMarker.refreshContent(axisClicked);
         mMarker.draw(canvas, axisClicked.getDrawXMarker(), axisClicked.getDrawYMarker());
+        //TODO print indicator marker
+        /*Paint paint = new Paint();
+        paint.setColor(Color.RED);
+        canvas.drawCircle(axisClicked.getDrawXMarker(), axisClicked.getDrawYMarker(), 60, paint);
+        */
       }
       selectedPosition = null;
     }

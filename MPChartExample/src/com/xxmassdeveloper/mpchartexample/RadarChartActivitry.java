@@ -24,7 +24,7 @@ import com.github.mikephil.charting.formatter.IAxisImageFormatter;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.xxmassdeveloper.mpchartexample.custom.RadarMarkerView;
+import com.xxmassdeveloper.mpchartexample.custom.SeatRadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.util.ArrayList;
 
@@ -61,7 +61,7 @@ public class RadarChartActivitry extends DemoBase {
 
     // create a custom MarkerView (extend MarkerView) and specify the layout
     // to use for it
-    MarkerView mv = new RadarMarkerView(this, R.layout.radar_markerview);
+    MarkerView mv = new SeatRadarMarkerView(this, R.layout.seat_radar_markerview);
     mv.setChartView(mChart); // For bounds control
     mChart.setMarker(mv); // Set the marker to the chart
 
@@ -80,17 +80,18 @@ public class RadarChartActivitry extends DemoBase {
 
         private SeatRadarChartAxis[] parameters = new SeatRadarChartAxis[] {
             new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher)),
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_delete)),
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_add)),
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_agenda)),
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_call)),
-            new SeatRadarChartAxis(
-                ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_camera))
+                ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher),
+                "Axis 1", "86/100"), new SeatRadarChartAxis(
+            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_delete),
+            "Axis 2", "80/100"), new SeatRadarChartAxis(
+            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_add),
+            "Axis 3", "65/100"), new SeatRadarChartAxis(
+            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_agenda),
+            "Axis 4", "44/100"), new SeatRadarChartAxis(
+            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_call),
+            "Axis 5", "23/100"), new SeatRadarChartAxis(
+            ContextCompat.getDrawable(getApplicationContext(), android.R.drawable.ic_menu_camera),
+            "Axis 6", "98/100")
         };
 
         @Override public SeatRadarChartAxis getImage(int index) {

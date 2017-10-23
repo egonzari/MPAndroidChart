@@ -37,7 +37,7 @@ public interface IMarker {
      */
     void refreshContent(Entry e, Highlight highlight);
 
-    void showSeatParameterDetail(SeatRadarChartAxis seatRadarChartParameter);
+    void refreshContent(SeatRadarChartAxis seatRadarChartParameter);
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

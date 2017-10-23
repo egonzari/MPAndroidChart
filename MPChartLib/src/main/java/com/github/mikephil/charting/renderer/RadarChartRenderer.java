@@ -234,22 +234,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
       //Draw image parameter
       SeatRadarChartAxis seatAxis = mChart.getXAxis().getImageFormatter().getImage(i);
       Drawable drawable = seatAxis.getDrawable();
-
-      float distanceX = Math.abs(center.x - p.x);
-      float distanceY = Math.abs(center.y - p.y);
-      if ( center.x >= p.x){
-        seatAxis.setDrawXMarker(center.x-(distanceX/1.15f));
-      }else{
-        seatAxis.setDrawXMarker(center.x+(distanceX/1.25f));
-      }
-      if ( center.y >= p.y){
-        seatAxis.setDrawYMarker(center.y-(distanceY/1.25f));
-      }else{
-        seatAxis.setDrawYMarker(center.y+(distanceY/1.25f));
-      }
-
-      //seatAxis.setDrawXMarker(p.x);
-      //seatAxis.setDrawYMarker(p.y);
+      Utils.setSeatMarketPosition(seatAxis, center, p);
       Utils.getPosition(center, Utils.getScreenWidth() + drawable.getIntrinsicWidth() / 1.5f,
           sliceangle * i + rotationangle, p);
       seatAxis.setDrawX(p.x);
