@@ -51,14 +51,16 @@ public class RadarChartActivitry extends DemoBase {
     tv.setBackgroundColor(Color.rgb(60, 65, 82));
 
     mChart = (RadarChart) findViewById(R.id.chart1);
-    mChart.setBackgroundColor(Color.rgb(60, 65, 82));
+    mChart.setBackgroundColor(Color.rgb(25, 25, 25));
 
     mChart.getDescription().setEnabled(false);
 
     mChart.setWebLineWidth(1f);
-    mChart.setWebColor(Color.LTGRAY);
+    mChart.setWebColor(0xFF585858);
     mChart.setWebLineWidthInner(1f);
-    mChart.setWebColorInner(Color.LTGRAY);
+    mChart.setCircleColors( new int[] { 0xff1a1a1a, 0xff222222, 0xff191919, 0xff222222 });
+    mChart.setPositionsCircleColors(new float[] { 0.3f, 0.6f, 0.7f, 0.9f });
+    mChart.setWebColorInner(0xFF585858);
     mChart.setWebAlpha(100);
     mChart.setImageDrawMode(true);
     mChart.setRotationEnabled(false);

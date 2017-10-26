@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RadialGradient;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
@@ -222,6 +224,29 @@ public class RadarChartRenderer extends LineRadarRenderer {
     float rotationangle = mChart.getRotationAngle();
     MPPointF center = mChart.getCenterOffsets();
 
+    // draw the inner-web
+    mWebPaint.setStrokeWidth(mChart.getWebLineWidthInner());
+    mWebPaint.setColor(mChart.getWebColorInner());
+    mWebPaint.setAlpha(mChart.getWebAlpha());
+
+    //Circles that represents the radar using labelCount
+    int numCircles = mChart.getNumCircles();
+    int spaceCircle = 120;
+    for (int j = 0; j < numCircles; j++) {
+      float circleRadius = Utils.getScreenWidth();
+      circleRadius -= j * spaceCircle;
+      if (j == 0 && mChart.getCircleColors() != null && mChart.getPositionsCircleColors() != null) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        int[] colors = mChart.getCircleColors();
+        float[] positions = mChart.getPositionsCircleColors();
+        paint.setShader(new RadialGradient(center.x, center.y, circleRadius, colors, positions,
+            Shader.TileMode.CLAMP));
+        canvas.drawCircle(center.x, center.y, circleRadius, paint);
+      }
+      canvas.drawCircle(center.x, center.y, circleRadius, mWebPaint);
+    }
+
     // draw the web lines that come from the center
     mWebPaint.setStrokeWidth(mChart.getWebLineWidth());
     mWebPaint.setColor(mChart.getWebColor());
@@ -244,20 +269,6 @@ public class RadarChartRenderer extends LineRadarRenderer {
           drawable.getIntrinsicHeight());
     }
     MPPointF.recycleInstance(p);
-
-    // draw the inner-web
-    mWebPaint.setStrokeWidth(mChart.getWebLineWidthInner());
-    mWebPaint.setColor(mChart.getWebColorInner());
-    mWebPaint.setAlpha(mChart.getWebAlpha());
-
-    //Circles that represents the radar using labelCount
-    int numCircles = mChart.getNumCircles();
-    int spaceCircle = 120;
-    for (int j = 0; j < numCircles; j++) {
-      float circleRadius = Utils.getScreenWidth();
-      circleRadius -= j * spaceCircle;
-      canvas.drawCircle(center.x, center.y, circleRadius, mWebPaint);
-    }
   }
 
   @Override public void drawHighlighted(Canvas c, Highlight[] indices) {

@@ -68,6 +68,10 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
   protected int numCircles = 4;
 
+  protected int [] circleColors;
+
+  protected float [] positionsCircleColors;
+
   public RadarChart(Context context) {
     super(context);
   }
@@ -379,4 +383,21 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   public void setNumCircles(int numCircles) {
     this.numCircles = numCircles;
   }
+
+  public int[] getCircleColors() {
+    return circleColors;
+  }
+
+  public void setCircleColors(int[] circleColors) {
+    this.circleColors = circleColors;
+  }
+
+  public float[] getPositionsCircleColors() {
+    return positionsCircleColors;
+  }
+
+  public void setPositionsCircleColors(float[] positionsCircleColors) {
+    this.positionsCircleColors = positionsCircleColors;
+  }
+
 }
