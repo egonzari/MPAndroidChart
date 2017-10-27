@@ -27,4 +27,6 @@ public interface IRadarDataSet extends ILineRadarDataSet<RadarEntry> {
 
     float getHighlightCircleStrokeWidth();
 
+    int [] getFillColorArray();
+
 }

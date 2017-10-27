@@ -89,7 +89,7 @@ public abstract class LineRadarRenderer extends LineScatterCandleRadarRenderer {
      *
      * @return
      */
-    private boolean clipPathSupported() {
+    protected boolean clipPathSupported() {
         return Utils.getSDKInt() >= 18;
     }
 }

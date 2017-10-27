@@ -248,6 +248,7 @@ public class RadarChartActivitry extends DemoBase {
     RadarDataSet set1 = new RadarDataSet(entries1, "Last Week");
     set1.setColor(Color.rgb(201, 201, 201));
     set1.setFillColor(Color.rgb(201, 201, 201));
+    set1.setFillColorArray(new int[]{0XE6EEEEEE, 0XE6DDDDDD, 0XE6CCCCCC, 0XE6BBBBBB, 0XE6AAAAAA, 0XE6F8F8F8});
     set1.setDrawFilled(true);
     set1.setFillAlpha(180);
     set1.setLineWidth(2f);
@@ -257,6 +258,7 @@ public class RadarChartActivitry extends DemoBase {
     RadarDataSet set2 = new RadarDataSet(entries2, "This Week");
     set2.setColor(Color.rgb(220, 48, 58));
     set2.setFillColor(Color.rgb(220, 48, 58));
+    set2.setFillColorArray(new int[]{0XE6B3272F, 0XE6A3242B, 0XE6952128, 0XE6861A25, 0XE6771B21, 0XE6C12932});
     set2.setDrawFilled(true);
     set2.setFillAlpha(180);
     set2.setLineWidth(2f);
