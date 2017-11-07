@@ -9,9 +9,9 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
@@ -257,13 +257,13 @@ public class RadarChartRenderer extends LineRadarRenderer {
       Utils.getPosition(center, Utils.getScreenWidth(), sliceangle * i + rotationangle, p);
       canvas.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
       //Draw image parameter
-      SeatRadarChartAxis seatAxis = mChart.getXAxis().getImageFormatter().getImage(i);
-      Drawable drawable = seatAxis.getDrawable();
-      Utils.setSeatMarketPosition(seatAxis, center, p);
+      CircleRadarChartAxis circleAxis = mChart.getXAxis().getImageFormatter().getImage(i);
+      Drawable drawable = circleAxis.getDrawable();
+      Utils.setCircleMarketPosition(circleAxis, center, p);
       Utils.getPosition(center, Utils.getScreenWidth() + (drawable.getIntrinsicWidth()+30) / 1.5f,
           sliceangle * i + rotationangle, p);
-      seatAxis.setDrawX(p.x);
-      seatAxis.setDrawY(p.y);
+      circleAxis.setDrawX(p.x);
+      circleAxis.setDrawY(p.y);
       Utils.drawImage(canvas, drawable, (int) p.x, (int) p.y, drawable.getIntrinsicWidth(),
           drawable.getIntrinsicHeight());
     }

@@ -30,8 +30,8 @@ import com.github.mikephil.charting.components.IMarker;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.highlight.ChartHighlighter;
@@ -643,7 +643,7 @@ public abstract class Chart<T extends ChartData<? extends IDataSet<? extends Ent
     invalidate();
   }
 
-  public void drawSeatParameterMarker(Canvas canvas, SeatRadarChartAxis parameter) {
+  public void drawCircleParameterMarker(Canvas canvas, CircleRadarChartAxis parameter) {
     // draw the marker
     mMarker.draw(canvas, parameter.getDrawX(), parameter.getDrawY());
   }

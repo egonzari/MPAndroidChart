@@ -1,6 +1,6 @@
 package com.github.mikephil.charting.formatter;
 
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 
 /**
  * Created by Philipp Jahoda on 20/09/15.
@@ -14,7 +14,7 @@ public interface IAxisImageFormatter {
    * before being drawn. For performance reasons, avoid excessive calculations
    * and memory allocations inside this method.
    */
-  SeatRadarChartAxis getImage(int index);
+  CircleRadarChartAxis getImage(int index);
 
-  SeatRadarChartAxis[] getParameters();
+  CircleRadarChartAxis[] getParameters();
 }

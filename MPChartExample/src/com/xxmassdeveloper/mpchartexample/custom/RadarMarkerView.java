@@ -5,8 +5,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.xxmassdeveloper.mpchartexample.R;
@@ -38,8 +38,8 @@ public class RadarMarkerView extends MarkerView {
         super.refreshContent(e, highlight);
     }
 
-    @Override public void refreshContent(SeatRadarChartAxis seatRadarChartParameter) {
-        tvContent.setText(format.format(seatRadarChartParameter.getName()));
+    @Override public void refreshContent(CircleRadarChartAxis parameter) {
+        tvContent.setText(format.format(parameter.getName()));
         super.refreshContent(null, null);
     }
 

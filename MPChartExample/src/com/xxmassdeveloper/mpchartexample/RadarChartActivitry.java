@@ -17,15 +17,15 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.data.RadarDataSet;
 import com.github.mikephil.charting.data.RadarEntry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.formatter.IAxisImageFormatter;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet;
-import com.xxmassdeveloper.mpchartexample.custom.SeatRadarMarkerView;
+import com.xxmassdeveloper.mpchartexample.custom.CircleRadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class RadarChartActivitry extends DemoBase {
 
   private static final int NUM_PARAMETERS = 6;
 
-  private SeatRadarChartAxis[] axis = new SeatRadarChartAxis[NUM_PARAMETERS];
+  private CircleRadarChartAxis[] axis = new CircleRadarChartAxis[NUM_PARAMETERS];
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -68,7 +68,7 @@ public class RadarChartActivitry extends DemoBase {
 
     // create a custom MarkerView (extend MarkerView) and specify the layout
     // to use for it
-    MarkerView mv = new SeatRadarMarkerView(this, R.layout.seat_radar_markerview);
+    MarkerView mv = new CircleRadarMarkerView(this, R.layout.circle_radar_markerview);
     mv.setChartView(mChart); // For bounds control
     mChart.setMarker(mv); // Set the marker to the chart
 
@@ -85,11 +85,11 @@ public class RadarChartActivitry extends DemoBase {
     if (mChart.isImageDrawMode()) {
       xAxis.setImageFormatter(new IAxisImageFormatter() {
 
-        @Override public SeatRadarChartAxis getImage(int index) {
+        @Override public CircleRadarChartAxis getImage(int index) {
           return axis[index];
         }
 
-        public SeatRadarChartAxis[] getParameters() {
+        public CircleRadarChartAxis[] getParameters() {
           return axis;
         }
       });
@@ -280,6 +280,6 @@ public class RadarChartActivitry extends DemoBase {
   }
 
   private void addAxiToList(int position, String name, float value, Drawable drawable) {
-    axis[position] = SeatRadarChartAxis.createInitialItem(name, value, drawable);
+    axis[position] = CircleRadarChartAxis.createInitialItem(name, value, drawable);
   }
 }

@@ -2,8 +2,8 @@ package com.github.mikephil.charting.components;
 
 import android.graphics.Canvas;
 
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 
@@ -37,7 +37,7 @@ public interface IMarker {
      */
     void refreshContent(Entry e, Highlight highlight);
 
-    void refreshContent(SeatRadarChartAxis seatRadarChartParameter);
+    void refreshContent(CircleRadarChartAxis parameter);
 
     /**
      * Draws the IMarker on the given position on the screen with the given Canvas object.

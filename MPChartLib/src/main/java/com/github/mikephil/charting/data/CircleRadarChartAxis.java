@@ -6,10 +6,10 @@ import java.text.DecimalFormat;
 /**
  * Edu-MPAndroidChart
  * com.github.mikephil.charting.data
- * SeatRadarChartAxis
+ * CircleRadarChartAxis
  */
 
-public class SeatRadarChartAxis {
+public class CircleRadarChartAxis {
 
   private Drawable drawable;
 
@@ -25,19 +25,19 @@ public class SeatRadarChartAxis {
 
   private String percent;
 
-  public SeatRadarChartAxis() {
+  public CircleRadarChartAxis() {
   }
 
-  public SeatRadarChartAxis(Drawable drawable) {
+  public CircleRadarChartAxis(Drawable drawable) {
     this.drawable = drawable;
   }
 
-  public SeatRadarChartAxis(Drawable drawable, String name) {
+  public CircleRadarChartAxis(Drawable drawable, String name) {
     this.drawable = drawable;
     this.name = name;
   }
 
-  public SeatRadarChartAxis(Drawable drawable, String name, String percent) {
+  public CircleRadarChartAxis(Drawable drawable, String name, String percent) {
     this.drawable = drawable;
     this.name = name;
     this.percent = percent;
@@ -107,16 +107,17 @@ public class SeatRadarChartAxis {
     return getDrawable().getIntrinsicHeight();
   }
 
-  public static SeatRadarChartAxis createInitialItem(String name, float value, Drawable drawable) {
-    SeatRadarChartAxis seatRadarChartAxis = new SeatRadarChartAxis();
+  public static CircleRadarChartAxis createInitialItem(String name, float value,
+      Drawable drawable) {
+    CircleRadarChartAxis radarChartAxis = new CircleRadarChartAxis();
 
-    seatRadarChartAxis.setName(name);
+    radarChartAxis.setName(name);
 
     DecimalFormat df = new DecimalFormat();
     df.setMaximumFractionDigits(2);
-    seatRadarChartAxis.setPercent(df.format(value) + "/100");
+    radarChartAxis.setPercent(df.format(value) + "/100");
 
-    seatRadarChartAxis.setDrawable(drawable);
-    return seatRadarChartAxis;
+    radarChartAxis.setDrawable(drawable);
+    return radarChartAxis;
   }
 }

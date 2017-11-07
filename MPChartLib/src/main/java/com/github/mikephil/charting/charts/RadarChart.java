@@ -7,8 +7,8 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.components.YAxis.AxisDependency;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.RadarData;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.RadarHighlighter;
 import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
@@ -178,13 +178,13 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
     drawMarkers(canvas);
 
-    drawSeatMarker(canvas);
+    drawCircleMarker(canvas);
   }
 
-  private void drawSeatMarker(Canvas canvas) {
+  private void drawCircleMarker(Canvas canvas) {
     if (selectedPosition != null) {
-      SeatRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
-      SeatRadarChartAxis axisClicked =
+      CircleRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
+      CircleRadarChartAxis axisClicked =
           Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
       if (axisClicked != null) {
         mMarker.refreshContent(axisClicked);

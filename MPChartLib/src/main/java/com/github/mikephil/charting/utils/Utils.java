@@ -17,7 +17,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
 import java.util.List;
@@ -694,10 +694,10 @@ public abstract class Utils {
     return android.os.Build.VERSION.SDK_INT;
   }
 
-  public static SeatRadarChartAxis getRadarAxisClicked(SeatRadarChartAxis[] axis, float x,
+  public static CircleRadarChartAxis getRadarAxisClicked(CircleRadarChartAxis[] axis, float x,
       float y) {
-    SeatRadarChartAxis axisClicked = null;
-    for (SeatRadarChartAxis item : axis) {
+    CircleRadarChartAxis axisClicked = null;
+    for (CircleRadarChartAxis item : axis) {
       float marginXLeft = item.getDrawX() - (item.getWidth() / 2);
       float marginXRight = item.getDrawX() + (item.getWidth() / 2);
       float marginYTop = item.getDrawY() + (item.getHeight() / 2);
@@ -709,19 +709,19 @@ public abstract class Utils {
     return axisClicked;
   }
 
-  public static void setSeatMarketPosition(SeatRadarChartAxis seatAxis, MPPointF center,
+  public static void setCircleMarketPosition(CircleRadarChartAxis axis, MPPointF center,
       MPPointF p) {
     float distanceX = Math.abs(center.x - p.x);
     float distanceY = Math.abs(center.y - p.y);
     if (center.x >= p.x) {
-      seatAxis.setDrawXMarker(p.x + (distanceX / 1.5f));
+      axis.setDrawXMarker(p.x + (distanceX / 1.5f));
     } else {
-      seatAxis.setDrawXMarker(p.x - (distanceX / 1.5f));
+      axis.setDrawXMarker(p.x - (distanceX / 1.5f));
     }
     if (center.y >= p.y) {
-      seatAxis.setDrawYMarker(p.y + (distanceY / 1.5f));
+      axis.setDrawYMarker(p.y + (distanceY / 1.5f));
     } else {
-      seatAxis.setDrawYMarker(p.y - (distanceY / 8f));
+      axis.setDrawYMarker(p.y - (distanceY / 8f));
     }
   }
 }

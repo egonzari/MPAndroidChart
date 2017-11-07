@@ -6,8 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import com.github.mikephil.charting.charts.Chart;
+import com.github.mikephil.charting.data.CircleRadarChartAxis;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.SeatRadarChartAxis;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 import java.lang.ref.WeakReference;
@@ -113,7 +113,7 @@ public class MarkerView extends RelativeLayout implements IMarker {
 
     }
 
-    @Override public void refreshContent(SeatRadarChartAxis seatRadarChartParameter) {
+    @Override public void refreshContent(CircleRadarChartAxis parameter) {
 
     }
 
