@@ -92,8 +92,9 @@ public class RadarChartRenderer extends LineRadarRenderer {
         e2 = dataSet.getEntryForIndex(j + 1);
       }
 
-      float dist1 = (e1.getY() * Utils.getScreenWidth()) / 100;
-      float dist2 = (e2.getY() * Utils.getScreenWidth()) / 100;
+      float screenDistance = getMaxDistanceCenterPoint();
+      float dist1 = (e1.getY() * screenDistance) / 100;
+      float dist2 = (e2.getY() * screenDistance) / 100;
 
       Utils.getPosition(center, dist1, sliceangle * j * phaseX + mChart.getRotationAngle(), pOut);
       surface.lineTo(pOut.x, pOut.y);
@@ -214,6 +215,16 @@ public class RadarChartRenderer extends LineRadarRenderer {
     drawWeb(c);
   }
 
+  private float getMaxDistanceCenterPoint() {
+    float maxDistanceCenterPoint;
+    if (mChart.isAndroidAutoScreen()) {
+      maxDistanceCenterPoint = mChart.getMinimumWidth() * 0.26f;
+    } else {
+      maxDistanceCenterPoint = Utils.getScreenWidth();
+    }
+    return maxDistanceCenterPoint;
+  }
+
   protected void drawWeb(Canvas canvas) {
 
     float sliceangle = mChart.getSliceAngle();
@@ -228,11 +239,18 @@ public class RadarChartRenderer extends LineRadarRenderer {
     mWebPaint.setColor(mChart.getWebColorInner());
     mWebPaint.setAlpha(mChart.getWebAlpha());
 
+    //-------------------------------
     //Circles that represents the radar using labelCount
     int numCircles = mChart.getNumCircles();
+
+    float maxDistanceCenterPoint = getMaxDistanceCenterPoint();
     int spaceCircle = 120;
+    if (mChart.isAndroidAutoScreen()) {
+      spaceCircle = 30;
+    }
+
     for (int j = 0; j < numCircles; j++) {
-      float circleRadius = Utils.getScreenWidth();
+      float circleRadius = maxDistanceCenterPoint;
       circleRadius -= j * spaceCircle;
       if (j == 0 && mChart.getCircleColors() != null && mChart.getPositionsCircleColors() != null) {
         Paint paint = new Paint();
@@ -245,6 +263,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
       }
       canvas.drawCircle(center.x, center.y, circleRadius, mWebPaint);
     }
+    //-------------------------------
 
     // draw the web lines that come from the center
     mWebPaint.setStrokeWidth(mChart.getWebLineWidth());
@@ -254,18 +273,24 @@ public class RadarChartRenderer extends LineRadarRenderer {
     int maxEntryCount = mChart.getData().getMaxEntryCountSet().getEntryCount();
     MPPointF p = MPPointF.getInstance(0, 0);
     for (int i = 0; i < maxEntryCount; i += xIncrements) {
-      Utils.getPosition(center, Utils.getScreenWidth(), sliceangle * i + rotationangle, p);
+      Utils.getPosition(center, maxDistanceCenterPoint, sliceangle * i + rotationangle, p);
       canvas.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
       //Draw image parameter
       CircleRadarChartAxis circleAxis = mChart.getXAxis().getImageFormatter().getImage(i);
       Drawable drawable = circleAxis.getDrawable();
+      int drawableWidth = drawable.getIntrinsicWidth();
+      int drawableHeight = drawable.getIntrinsicHeight();
       Utils.setCircleMarketPosition(circleAxis, center, p);
-      Utils.getPosition(center, Utils.getScreenWidth() + (drawable.getIntrinsicWidth()+30) / 1.5f,
-          sliceangle * i + rotationangle, p);
+      if (mChart.isAndroidAutoScreen()) {
+        Utils.getPosition(center, maxDistanceCenterPoint + drawableWidth / 1.3f,
+            sliceangle * i + rotationangle, p);
+      } else {
+        Utils.getPosition(center, maxDistanceCenterPoint + (drawableWidth + 30) / 1.5f,
+            sliceangle * i + rotationangle, p);
+      }
       circleAxis.setDrawX(p.x);
       circleAxis.setDrawY(p.y);
-      Utils.drawImage(canvas, drawable, (int) p.x, (int) p.y, drawable.getIntrinsicWidth(),
-          drawable.getIntrinsicHeight());
+      Utils.drawImage(canvas, drawable, (int) p.x, (int) p.y, drawableWidth, drawableHeight);
     }
     MPPointF.recycleInstance(p);
   }

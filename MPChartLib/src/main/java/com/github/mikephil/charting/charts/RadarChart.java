@@ -14,6 +14,7 @@ import com.github.mikephil.charting.renderer.RadarChartRenderer;
 import com.github.mikephil.charting.renderer.XAxisRendererRadarChart;
 import com.github.mikephil.charting.renderer.YAxisRendererRadarChart;
 import com.github.mikephil.charting.utils.Utils;
+import java.util.List;
 
 /**
  * Implementation of the RadarChart, a "spidernet"-like chart. It works best
@@ -66,11 +67,13 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   protected YAxisRendererRadarChart mYAxisRenderer;
   protected XAxisRendererRadarChart mXAxisRenderer;
 
+  protected boolean isAndroidAutoScreen;
+
   protected int numCircles = 4;
 
-  protected int [] circleColors;
+  protected int[] circleColors;
 
-  protected float [] positionsCircleColors;
+  protected float[] positionsCircleColors;
 
   public RadarChart(Context context) {
     super(context);
@@ -183,7 +186,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
   private void drawCircleMarker(Canvas canvas) {
     if (selectedPosition != null) {
-      CircleRadarChartAxis[] axis = getXAxis().getImageFormatter().getParameters();
+      List<CircleRadarChartAxis> axis = getXAxis().getImageFormatter().getParameters();
       CircleRadarChartAxis axisClicked =
           Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
       if (axisClicked != null) {
@@ -191,11 +194,11 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
         float positionX = axisClicked.getDrawXMarker();
         float positionY = axisClicked.getDrawYMarker();
         if (axisClicked.getDrawYMarker() > axisClicked.getDrawY()) {
-          positionY -= 60;
+          positionY -= 10;
         } else {
-          if ( axisClicked.getDrawX() != axisClicked.getDrawXMarker()){
+          if (axisClicked.getDrawX() != axisClicked.getDrawXMarker()) {
             positionY += 140;
-          }else {
+          } else {
             positionY += 60;
           }
         }
@@ -398,6 +401,14 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
 
   public void setPositionsCircleColors(float[] positionsCircleColors) {
     this.positionsCircleColors = positionsCircleColors;
+  }
+
+  public boolean isAndroidAutoScreen() {
+    return isAndroidAutoScreen;
+  }
+
+  public void setAndroidAutoScreen(boolean androidAutoScreen) {
+    isAndroidAutoScreen = androidAutoScreen;
   }
 
 }

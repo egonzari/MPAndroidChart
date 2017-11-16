@@ -1,6 +1,7 @@
 package com.github.mikephil.charting.formatter;
 
 import com.github.mikephil.charting.data.CircleRadarChartAxis;
+import java.util.List;
 
 /**
  * Created by Philipp Jahoda on 20/09/15.
@@ -16,5 +17,5 @@ public interface IAxisImageFormatter {
    */
   CircleRadarChartAxis getImage(int index);
 
-  CircleRadarChartAxis[] getParameters();
+  List<CircleRadarChartAxis> getParameters();
 }

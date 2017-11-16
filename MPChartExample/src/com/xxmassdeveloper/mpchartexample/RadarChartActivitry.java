@@ -29,6 +29,7 @@ import com.xxmassdeveloper.mpchartexample.custom.CircleRadarMarkerView;
 import com.xxmassdeveloper.mpchartexample.notimportant.DemoBase;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class RadarChartActivitry extends DemoBase {
@@ -37,7 +38,7 @@ public class RadarChartActivitry extends DemoBase {
 
   private static final int NUM_PARAMETERS = 6;
 
-  private CircleRadarChartAxis[] axis = new CircleRadarChartAxis[NUM_PARAMETERS];
+  private List<CircleRadarChartAxis> axis = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -86,10 +87,10 @@ public class RadarChartActivitry extends DemoBase {
       xAxis.setImageFormatter(new IAxisImageFormatter() {
 
         @Override public CircleRadarChartAxis getImage(int index) {
-          return axis[index];
+          return axis.get(index);
         }
 
-        public CircleRadarChartAxis[] getParameters() {
+        public List<CircleRadarChartAxis> getParameters() {
           return axis;
         }
       });
@@ -240,7 +241,7 @@ public class RadarChartActivitry extends DemoBase {
       float val1 = new Random().nextFloat() * (max - min) + min;
       entries1.add(new RadarEntry(val1));
       float val2 = new Random().nextFloat() * (max - min) + min;
-      addAxiToList(i, "Axis " + i, val2,
+      addAxiToList("Axis " + i, val2,
           ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_launcher));
       entries2.add(new RadarEntry(val2));
     }
@@ -279,7 +280,7 @@ public class RadarChartActivitry extends DemoBase {
     mChart.invalidate();
   }
 
-  private void addAxiToList(int position, String name, float value, Drawable drawable) {
-    axis[position] = CircleRadarChartAxis.createInitialItem(name, value, drawable);
+  private void addAxiToList(String name, float value, Drawable drawable) {
+    axis.add(CircleRadarChartAxis.createInitialItem(name, value, drawable));
   }
 }

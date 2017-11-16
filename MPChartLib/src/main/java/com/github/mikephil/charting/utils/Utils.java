@@ -694,7 +694,7 @@ public abstract class Utils {
     return android.os.Build.VERSION.SDK_INT;
   }
 
-  public static CircleRadarChartAxis getRadarAxisClicked(CircleRadarChartAxis[] axis, float x,
+  public static CircleRadarChartAxis getRadarAxisClicked(List<CircleRadarChartAxis> axis, float x,
       float y) {
     CircleRadarChartAxis axisClicked = null;
     for (CircleRadarChartAxis item : axis) {
