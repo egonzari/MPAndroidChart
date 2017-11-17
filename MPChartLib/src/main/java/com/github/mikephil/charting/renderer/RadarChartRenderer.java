@@ -273,8 +273,11 @@ public class RadarChartRenderer extends LineRadarRenderer {
     int maxEntryCount = mChart.getData().getMaxEntryCountSet().getEntryCount();
     MPPointF p = MPPointF.getInstance(0, 0);
     for (int i = 0; i < maxEntryCount; i += xIncrements) {
+
+      //Draw line from center to max circle
       Utils.getPosition(center, maxDistanceCenterPoint, sliceangle * i + rotationangle, p);
       canvas.drawLine(center.x, center.y, p.x, p.y, mWebPaint);
+
       //Draw image parameter
       CircleRadarChartAxis circleAxis = mChart.getXAxis().getImageFormatter().getImage(i);
       Drawable drawable = circleAxis.getDrawable();
@@ -288,6 +291,7 @@ public class RadarChartRenderer extends LineRadarRenderer {
         Utils.getPosition(center, maxDistanceCenterPoint + (drawableWidth + 30) / 1.5f,
             sliceangle * i + rotationangle, p);
       }
+
       circleAxis.setDrawX(p.x);
       circleAxis.setDrawY(p.y);
       Utils.drawImage(canvas, drawable, (int) p.x, (int) p.y, drawableWidth, drawableHeight);

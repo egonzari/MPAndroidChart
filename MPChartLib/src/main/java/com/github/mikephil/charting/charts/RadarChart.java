@@ -185,7 +185,7 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   }
 
   private void drawCircleMarker(Canvas canvas) {
-    if (selectedPosition != null) {
+    if (!isAndroidAutoScreen() && selectedPosition != null) {
       List<CircleRadarChartAxis> axis = getXAxis().getImageFormatter().getParameters();
       CircleRadarChartAxis axisClicked =
           Utils.getRadarAxisClicked(axis, selectedPosition[0], selectedPosition[1]);
@@ -410,5 +410,4 @@ public class RadarChart extends PieRadarChartBase<RadarData> {
   public void setAndroidAutoScreen(boolean androidAutoScreen) {
     isAndroidAutoScreen = androidAutoScreen;
   }
-
 }
